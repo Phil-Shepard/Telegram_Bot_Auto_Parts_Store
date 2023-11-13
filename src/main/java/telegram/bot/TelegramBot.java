@@ -6,10 +6,13 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.commands.BotCommand;
 import org.telegram.telegrambots.meta.api.objects.commands.scope.BotCommandScopeDefault;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import telegram.bot.Logic;
 import telegram.config.BotConfig;
 
+import java.security.Key;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -68,7 +71,10 @@ public class TelegramBot extends TelegramLongPollingBot {
         }
     }
     private void startCommandReceived(long chatId, String name)  {
-        String answer = "Привет, " + name + " это магазин крутых вещей!";
+        String answer = "Привет, " + name + ", Это телеграмм бот магазина  автозапчастей." +
+                " Доступны следующие команды:\n" +
+                "/shop – Перейти в каталог запчастей.\n" +
+                "/help - Справка\n";
 //        log.info("Replide to user:" + name);
         sendMessage(chatId, answer);
     }
@@ -78,6 +84,7 @@ public class TelegramBot extends TelegramLongPollingBot {
         message.setChatId(String.valueOf(chatId));
         message.setText(textToSend);
 
+        message.setReplyMarkup(getKeyBoard("BMW Lada Reno"));
         try {
             execute(message);
         }
@@ -85,5 +92,19 @@ public class TelegramBot extends TelegramLongPollingBot {
 //            log.error("Error occurred:" + e.getMessage());
             System.out.println(e);
         }
+    }
+
+    private ReplyKeyboardMarkup getKeyBoard(String listCarsOrParts){
+        String[] buttons = listCarsOrParts.split(" ");
+        ReplyKeyboardMarkup keyboardMarkup = new ReplyKeyboardMarkup();
+        List<KeyboardRow> keyboardRows = new ArrayList<>();
+        KeyboardRow row = new KeyboardRow();
+        for (String button : buttons
+             ) {
+            row.add(button);
+        }
+        keyboardRows.add(row);
+        keyboardMarkup.setKeyboard(keyboardRows);
+        return keyboardMarkup;
     }
 }
