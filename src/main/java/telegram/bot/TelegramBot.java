@@ -10,6 +10,7 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMar
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import telegram.bot.Logic;
+import telegram.cars.Car;
 import telegram.config.BotConfig;
 
 import java.security.Key;
@@ -49,6 +50,7 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update) {
+        Logic logic = new Logic();
         if(update.hasMessage() && update.getMessage().hasText()){
             String messageText = update.getMessage().getText();
             long chatId = update.getMessage().getChatId();
@@ -56,40 +58,54 @@ public class TelegramBot extends TelegramLongPollingBot {
                 case "/start":
                     startCommandReceived(chatId, update.getMessage().getChat().getFirstName());
                     break;
-                case "Старт":
+                case "BMW":
+                    takeCarParts(chatId, logic.getCarsName("BMW"));
+                    break;
+                case "Reno":
+                    startCommandReceived(chatId, update.getMessage().getChat().getFirstName());
+                    break;
+                case "Lada":
                     startCommandReceived(chatId, update.getMessage().getChat().getFirstName());
                     break;
                 case "/help":
-                    sendMessage(chatId, "HELP_TEXT");
+                    sendMessage(chatId, "Справка о дуступных командах:\n" +
+                            "/shop\n" +
+                            "/add\n" +
+                            "/basket\n" +
+                            "/order_report\n" +
+                            "/help", "cars", null);
                     break;
-//                case "/myData":
-//                    sendMessage(chatId, "HELP_TEXT");
-//                    break;
                 default:
-                    sendMessage(chatId, "Простите, пока что недоступно");
+                    sendMessage(chatId, "Простите, пока что недоступно", null, null);
             }
         }
     }
+
+    private void takeCarParts(long chatId, Car car){
+        String answer = car.getAvailabilityParts();
+        sendMessage(chatId, answer, "parts", car);
+    }
+
     private void startCommandReceived(long chatId, String name)  {
         String answer = "Привет, " + name + ", Это телеграмм бот магазина  автозапчастей." +
                 " Доступны следующие команды:\n" +
                 "/shop – Перейти в каталог запчастей.\n" +
                 "/help - Справка\n";
-//        log.info("Replide to user:" + name);
-        sendMessage(chatId, answer);
+        sendMessage(chatId, answer, "cars", null);
     }
 
-    private void sendMessage(long chatId, String textToSend) {
+    private void sendMessage(long chatId, String textToSend, String carOrParts, Car car) {
         SendMessage message = new SendMessage();
         message.setChatId(String.valueOf(chatId));
         message.setText(textToSend);
-
-        message.setReplyMarkup(getKeyBoard("BMW Lada Reno"));
+        if (carOrParts == "cars")
+            message.setReplyMarkup(getKeyBoard(getCars()));
+        if (carOrParts == "pats")
+            message.setReplyMarkup(getKeyBoard(getParts(car)));
         try {
             execute(message);
         }
         catch (TelegramApiException e) {
-//            log.error("Error occurred:" + e.getMessage());
             System.out.println(e);
         }
     }
@@ -106,5 +122,20 @@ public class TelegramBot extends TelegramLongPollingBot {
         keyboardRows.add(row);
         keyboardMarkup.setKeyboard(keyboardRows);
         return keyboardMarkup;
+    }
+
+    private String getCars(){
+        Logic logic = new Logic();
+        String cars = "";
+        for (Car car:logic.getCars()
+        ) {
+            cars += car.getName()+ " ";
+        }
+        return cars;
+    }
+
+    private String getParts(Car car){
+        String parts = car.getAvailabilityParts();
+        return parts;
     }
 }
