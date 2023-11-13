@@ -24,7 +24,7 @@ public class Car {
         return name;
     }
 
-    public String AvailabilityParts(){
+    public String getAvailabilityParts(){
         return getWheels()+ getMotor() + getMirros() + getHeadlights() + getWipers();
     }
 
