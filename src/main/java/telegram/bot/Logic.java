@@ -23,4 +23,14 @@ public class Logic {
         listCars.add(lada);
         return listCars;
     }
+
+    public Car getCarsName(String name){
+        List<Car> list = getCars();
+        for(Car car: list){
+            if(car.getName() == name){
+                return car;
+            }
+        }
+        return bmw;
+    }
 }
