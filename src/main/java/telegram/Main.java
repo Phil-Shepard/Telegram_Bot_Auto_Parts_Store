@@ -13,10 +13,10 @@ public class Main {
         BotConfig config = new BotConfig();
         TelegramBotsApi bot = new TelegramBotsApi(DefaultBotSession.class);
         bot.registerBot(new TelegramBot(config));
-        Logic logic = new Logic();
-        for (Car car:logic.getCars()
-             ) {
-            System.out.println(car.AvailabilityParts());
-        }
+//        Logic logic = new Logic();
+//        for (Car car:logic.getCars()
+//             ) {
+//            System.out.println(car.getName());
+//        }
     }
 }
