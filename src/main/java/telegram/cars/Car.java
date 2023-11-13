@@ -3,13 +3,16 @@ package telegram.cars;
 import telegram.config.BotConfig;
 
 public class Car {
+
+    protected String name;
     protected String wheels;
     protected String motor;
     protected String mirrors;
     protected String headlights;
     protected String wipers;
 
-    public Car(String wheels, String motor, String mirrors, String headlights, String wipers){
+    public Car(String name, String wheels, String motor, String mirrors, String headlights, String wipers){
+        this.name = name;
         this.wheels = wheels;
         this.motor = motor;
         this.mirrors = mirrors;
@@ -17,8 +20,12 @@ public class Car {
         this.wipers = wipers;
     }
 
+    public String getName(){
+        return name;
+    }
+
     public String AvailabilityParts(){
-        return getWheels()+ " " + getMotor() + " " + getMirros()+ " " + getHeadlights()+ " " + getWipers();
+        return getWheels()+ getMotor() + getMirros() + getHeadlights() + getWipers();
     }
 
     public String getWheels(){

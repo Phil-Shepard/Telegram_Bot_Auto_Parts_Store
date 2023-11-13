@@ -14,7 +14,7 @@ public class Main {
         TelegramBotsApi bot = new TelegramBotsApi(DefaultBotSession.class);
         bot.registerBot(new TelegramBot(config));
         Logic logic = new Logic();
-        for (Car car:logic.GetCars()
+        for (Car car:logic.getCars()
              ) {
             System.out.println(car.AvailabilityParts());
         }
