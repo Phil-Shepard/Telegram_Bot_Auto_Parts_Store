@@ -1,4 +1,4 @@
-package telegram.bot;
+package com.urfu.bot;
 
 public class Main {
     public static void main(String[] args) {
