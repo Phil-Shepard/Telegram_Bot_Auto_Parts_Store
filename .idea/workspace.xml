@@ -5,14 +5,30 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e88d5b5f-c48d-4041-8498-9d6ff7a11461" name="Changes" comment="Initianal commit">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/telegram/bot/TelegramBot.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/telegram/bot/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/telegram/Main.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/urfu/bot/commands/Commands.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/urfu/bot/domain/car/Bmw.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/urfu/bot/domain/car/Lada.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/urfu/bot/domain/car/Renault.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/urfu/bot/domain/headlights/Headlights.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/urfu/bot/domain/wheels/Wheels.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/urfu/bot/storage/Storage.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/urfu/bot/telegram/Logic.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/urfu/bot/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/urfu/bot/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/urfu/bot/domain/car/Car.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/urfu/bot/domain/car/Car.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/urfu/bot/domain/powerWindows/PowerWindows.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/urfu/bot/domain/rearViewMirrors/RearViewMirrors.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/urfu/bot/domain/wipers/Wipers.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/urfu/bot/domain/wipers/Wipers.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/urfu/bot/services/accessories/AccessoriesService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/urfu/bot/services/spareParts/SparePartsService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/urfu/bot/services/accessories/AccessoriesServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/urfu/bot/services/spareParts/SparePartsServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/urfu/bot/services/car/CarService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/urfu/bot/services/car/CarService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/urfu/bot/services/car/CarServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/urfu/bot/services/car/CarServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/telegram/bot/Logic.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/telegram/bot/Logic.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/telegram/cars/Bmw.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/telegram/cars/Car.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/telegram/cars/Lada.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/telegram/cars/Reno.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/telegram/config/BotConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/urfu/bot/telegram/BotConfig.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -91,6 +107,7 @@
       <updated>1699696956832</updated>
       <workItem from="1699696959516" duration="4158000" />
       <workItem from="1699777386538" duration="911000" />
+      <workItem from="1700480627394" duration="929000" />
     </task>
     <task id="LOCAL-00001" summary="Initianal commit">
       <created>1699697462207</created>
@@ -116,7 +133,7 @@
                   <entry key="branch">
                     <value>
                       <list>
-                        <option value="master" />
+                        <option value="task1-Shamonin" />
                       </list>
                     </value>
                   </entry>

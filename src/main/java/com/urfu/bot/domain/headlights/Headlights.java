@@ -1,8 +1,8 @@
-package com.urfu.bot.domain.wipers;
+package com.urfu.bot.domain.headlights;
 
-public class Wipers {
+public class Headlights {
     private String availability;
-    public Wipers(String availability){
+    public Headlights(String availability){
         this.availability = availability;
     }
     public String getAvailability(){

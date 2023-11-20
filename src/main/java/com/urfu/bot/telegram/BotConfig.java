@@ -1,4 +1,4 @@
-package telegram.config;
+package com.urfu.bot.telegram;
 
 public class BotConfig {
     private final String botName = "EKBAutoPartsStoreBot";
@@ -11,5 +11,4 @@ public class BotConfig {
     public String getBotName(){
         return botName;
     }
-
 }
