@@ -56,11 +56,11 @@ public class Logic extends TelegramLongPollingBot {
                 case "BMW":
                     takeCarParts(chatId, storage.getCarPatrs("BMW"));
                     break;
-                case "Reno":
-                    startCommandReceived(chatId, update.getMessage().getChat().getFirstName());
+                case "Renault":
+                    takeCarParts(chatId, storage.getCarPatrs("Renault"));
                     break;
                 case "Lada":
-                    startCommandReceived(chatId, update.getMessage().getChat().getFirstName());
+                    takeCarParts(chatId, storage.getCarPatrs("Lada"));
                     break;
                 case "/help":
                     sendMessage(chatId, "Справка о дуступных командах:\n" +
