@@ -14,7 +14,7 @@ import java.util.List;
 public class Storage {
     private List<Car> listCars = new ArrayList<Car>();
     private Bmw bmw = new Bmw("BMW", new Wheels("колёса"), new Headlights(null), new Wipers("дворники"));
-    private Renault renault = new Renault("Reno", new Wheels(null), new Headlights("фары"), new Wipers("дворники"));
+    private Renault renault = new Renault("Renault", new Wheels(null), new Headlights("фары"), new Wipers("дворники"));
     private Lada lada = new Lada("Lada", new Wheels("колёса"), new Headlights("фары"), new Wipers("дворники"));
 
     public List<Car> getStorage(){
