@@ -1,5 +1,7 @@
 package com.urfu.bot.telegram;
 
+import com.urfu.bot.commands.Commands;
+import com.urfu.bot.services.car.CarServiceImpl;
 import com.urfu.bot.storage.Storage;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.commands.SetMyCommands;
@@ -8,6 +10,7 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.commands.BotCommand;
 import org.telegram.telegrambots.meta.api.objects.commands.scope.BotCommandScopeDefault;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardRemove;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import com.urfu.bot.domain.car.Car;
@@ -16,19 +19,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Logic extends TelegramLongPollingBot {
-    private BotConfig config;
+    public BotConfig config;
 
     public Logic(BotConfig config){
         this.config = config;
         List<BotCommand> listOfCommands = new ArrayList<>();
-        listOfCommands.add(new BotCommand("/start", "Это телеграмм бот магазина автозапчастей." +
-                "Доступны следующие команды:\n" +
-                "/shop – Перейти в каталог запчастей.\n" +
-                "/help - Справка\n"));
+        listOfCommands.add(new BotCommand("/start", "Это телеграмм бот магазина автозапчастей."));
         listOfCommands.add(new BotCommand("/shop","Перейти в каталог запчастей"));
-        listOfCommands.add(new BotCommand("/add","Добавить интересующий вас товар в корзину покупок"));
-        listOfCommands.add(new BotCommand("/basket","Перейти в корзину покупок"));
-        listOfCommands.add(new BotCommand("/order_report","Сформировать отчёт о самых часто заказываемых товарах"));
+        listOfCommands.add(new BotCommand("/add","Добавить в корзину выбранную запчасть"));
+        listOfCommands.add(new BotCommand("/basket","Вывести содержимое корзины"));
+        listOfCommands.add(new BotCommand("/order","Оформить заказ"));
+        listOfCommands.add(new BotCommand("/history","Вывести историю заказов"));
+        listOfCommands.add(new BotCommand("/delete","Удалить из корзины выбранные комплектующие"));
+        listOfCommands.add(new BotCommand("/exit","Выйти из каталога запчастей"));
         listOfCommands.add(new BotCommand("/help","Справка"));
         try{
             this.execute(new SetMyCommands(listOfCommands, new BotCommandScopeDefault(), null));
@@ -45,7 +48,7 @@ public class Logic extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update) {
-        Storage storage = new Storage();
+        CarServiceImpl carService = new CarServiceImpl();
         if(update.hasMessage() && update.getMessage().hasText()){
             String messageText = update.getMessage().getText();
             long chatId = update.getMessage().getChatId();
@@ -53,59 +56,74 @@ public class Logic extends TelegramLongPollingBot {
                 case "/start":
                     startCommandReceived(chatId, update.getMessage().getChat().getFirstName());
                     break;
+                case "/exit":
+                    sendMessage(chatId, "Простите, пока что недоступно", null, null);
+                    break;
+                case "/shop":
+                    GetShop(chatId, carService);
+                    break;
                 case "BMW":
-                    takeCarParts(chatId, storage.getCarPatrs("BMW"));
+                    takeCarParts(chatId, carService.getCar("BMW"));
                     break;
                 case "Renault":
-                    takeCarParts(chatId, storage.getCarPatrs("Renault"));
+                    takeCarParts(chatId, carService.getCar("Renault"));
                     break;
                 case "Lada":
-                    takeCarParts(chatId, storage.getCarPatrs("Lada"));
+                    takeCarParts(chatId, carService.getCar("Lada"));
                     break;
                 case "/help":
                     sendMessage(chatId, "Справка о дуступных командах:\n" +
                             "/shop\n" +
                             "/add\n" +
                             "/basket\n" +
-                            "/order_report\n" +
+                            "/order\n" +
+                            "/history\n" +
+                            "/delete\n" +
+                            "/exit\n" +
                             "/help", "cars", null);
-                    break;
+                     break;
                 default:
                     sendMessage(chatId, "Простите, пока что недоступно", null, null);
             }
         }
     }
 
-    private void takeCarParts(long chatId, Car car){
+    public void GetShop(long chatId, CarServiceImpl carService){
+        String answer = "В наличии комплектующиие для автомобилей: \n" + carService.GetNamesCars();
+        sendMessage(chatId, answer, "cars", null);
+    }
+    public void takeCarParts(long chatId, Car car) {
         String answer = car.getAvailabilityParts();
         sendMessage(chatId, answer, "parts", car);
     }
 
-    private void startCommandReceived(long chatId, String name)  {
-        String answer = "Привет, " + name + ", Это телеграмм бот магазина  автозапчастей." +
+    public void startCommandReceived(long chatId, String name)  {
+        String answer = "Привет, " + name +  ", Это телеграмм бот магазина  автозапчастей." +
                 " Доступны следующие команды:\n" +
                 "/shop – Перейти в каталог запчастей.\n" +
-                "/help - Справка\n";
+                "/add - добавить в корзину выбранную запчасть.\n" +
+                "/basket - вывести содержимое корзины.\n" +
+                "/order - оформить заказ\n" +
+                "/history - вывести историю заказов.\n" +
+                "/delete - удалить из корзины выбранные комплектующие.\n" +
+                "/exit - выйти из каталога запчастей" +
+                "/help - Справка.\n";
         sendMessage(chatId, answer, "cars", null);
     }
 
-    private void sendMessage(long chatId, String textToSend, String carOrParts, Car car) {
-        SendMessage message = new SendMessage();
-        message.setChatId(String.valueOf(chatId));
-        message.setText(textToSend);
-        if (carOrParts == "cars")
-            message.setReplyMarkup(getKeyBoard(getNameCars()));
-        if (carOrParts == "pats")
-            message.setReplyMarkup(getKeyBoard(getParts(car)));
-        try {
-            execute(message);
-        }
-        catch (TelegramApiException e) {
-            System.out.println(e);
-        }
+    public ReplyKeyboardRemove removeKeyboard() {
+        ReplyKeyboardRemove keyboardRemove = new ReplyKeyboardRemove();
+        keyboardRemove.setRemoveKeyboard(true);
+        return keyboardRemove;
     }
 
-    private ReplyKeyboardMarkup getKeyBoard(String listCarsOrParts){
+    public ReplyKeyboardMarkup getEmptyKeyboard(){
+        ReplyKeyboardMarkup emptyKeyboard = new ReplyKeyboardMarkup();
+        emptyKeyboard.setKeyboard(new ArrayList<>()); // Устанавливаем пустой список кнопок
+        return emptyKeyboard;
+    }
+
+    public ReplyKeyboardMarkup getKeyBoard(String listCarsOrParts){
         String[] buttons = listCarsOrParts.split(" ");
         ReplyKeyboardMarkup keyboardMarkup = new ReplyKeyboardMarkup();
         List<KeyboardRow> keyboardRows = new ArrayList<>();
@@ -119,8 +137,7 @@ public class Logic extends TelegramLongPollingBot {
         return keyboardMarkup;
     }
 
-    private String getNameCars(){
-//        Logic logic = new Logic();
+    public String getNameCars(){
         Storage storage = new Storage();
         List<Car> listCars = storage.getStorage();
         String nameCars = "";
@@ -131,8 +148,24 @@ public class Logic extends TelegramLongPollingBot {
         return nameCars;
     }
 
-    private String getParts(Car car){
+    public String getParts(Car car){
         String parts = car.getAvailabilityParts();
         return parts;
+    }
+    public void sendMessage(long chatId, String textToSend, String carOrParts, Car car) {
+        SendMessage message = new SendMessage();
+        message.setChatId(String.valueOf(chatId));
+        message.setText(textToSend);
+        Commands command = new Commands();
+        if (carOrParts == "cars")
+            message.setReplyMarkup(getKeyBoard(getNameCars()));
+        if (carOrParts == "parts")
+            message.setReplyMarkup(getKeyBoard(getParts(car)));
+        try {
+            execute(message);
+        }
+        catch (TelegramApiException e) {
+            System.out.println(e);
+        }
     }
 }
