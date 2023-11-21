@@ -8,5 +8,8 @@ public interface CarService {
 
     public List<Car> getCars();
 
-    public Car getCarsName(String name);
+    public String GetNamesCars();
+
+    public Car getCar(String name);
+
 }
