@@ -14,10 +14,24 @@ public class CarServiceImpl implements CarService{
     }
 
     @Override
-    public Car getCarsName(String name) {
+    public String GetNamesCars() {
+        List<Car> cars = getCars();
+        String names = "";
+        for (int i = 0; i < cars.size(); i++) {
+            if(i == cars.size() - 1)
+                names +=" " + cars.get(i).getName().toString();
+            else
+                names +=" " + cars.get(i).getName().toString() + ",";
+        }
+        return names;
+    }
+
+
+    @Override
+    public Car getCar(String name) {
         List<Car> cars = getCars();
         for (Car car: cars
-             ) {
+        ) {
             if (car.getName() == name)
                 return car;
         }

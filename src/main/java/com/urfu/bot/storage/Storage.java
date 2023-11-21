@@ -13,8 +13,8 @@ import java.util.List;
 
 public class Storage {
     private List<Car> listCars = new ArrayList<Car>();
-    private Bmw bmw = new Bmw("BMW", new Wheels("колёса"), new Headlights(null), new Wipers("дворники"));
-    private Renault renault = new Renault("Renault", new Wheels(null), new Headlights("фары"), new Wipers("дворники"));
+    private Bmw bmw = new Bmw("BMW", new Wheels("колёса"), new Headlights("фары"), new Wipers("дворники"));
+    private Renault renault = new Renault("Renault", new Wheels("колёса"), new Headlights("фары"), new Wipers("дворники"));
     private Lada lada = new Lada("Lada", new Wheels("колёса"), new Headlights("фары"), new Wipers("дворники"));
 
     public List<Car> getStorage(){
@@ -25,13 +25,5 @@ public class Storage {
         return listCars;
     }
 
-    public Car getCarPatrs(String name){
-        List<Car> list = getStorage();
-        for(Car car: list){
-            if(car.getName() == name){
-                return car;
-            }
-        }
-        return list.get(0);
-    }
+
 }
