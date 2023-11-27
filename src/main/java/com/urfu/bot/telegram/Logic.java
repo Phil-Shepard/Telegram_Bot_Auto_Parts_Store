@@ -1,6 +1,5 @@
 package com.urfu.bot.telegram;
 
-import com.urfu.bot.commands.Commands;
 import com.urfu.bot.services.car.CarServiceImpl;
 import com.urfu.bot.storage.Storage;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -57,7 +56,7 @@ public class Logic extends TelegramLongPollingBot {
                     startCommandReceived(chatId, update.getMessage().getChat().getFirstName());
                     break;
                 case "/exit":
-                    sendMessage(chatId, "Простите, пока что недоступно", null, null);
+                    sendMessage(chatId, "Вы закрыли каталог товаров", "delete", null);
                     break;
                 case "/shop":
                     GetShop(chatId, carService);
@@ -80,7 +79,7 @@ public class Logic extends TelegramLongPollingBot {
                             "/history\n" +
                             "/delete\n" +
                             "/exit\n" +
-                            "/help", "cars", null);
+                            "/help", "delete", null);
                      break;
                 default:
                     sendMessage(chatId, "Простите, пока что недоступно", null, null);
@@ -106,21 +105,15 @@ public class Logic extends TelegramLongPollingBot {
                 "/order - оформить заказ\n" +
                 "/history - вывести историю заказов.\n" +
                 "/delete - удалить из корзины выбранные комплектующие.\n" +
-                "/exit - выйти из каталога запчастей" +
+                "/exit - выйти из каталога запчастей.\n" +
                 "/help - Справка.\n";
-        sendMessage(chatId, answer, "cars", null);
+        sendMessage(chatId, answer, "delete", null);
     }
 
     public ReplyKeyboardRemove removeKeyboard() {
-        ReplyKeyboardRemove keyboardRemove = new ReplyKeyboardRemove();
-        keyboardRemove.setRemoveKeyboard(true);
-        return keyboardRemove;
-    }
-
-    public ReplyKeyboardMarkup getEmptyKeyboard(){
-        ReplyKeyboardMarkup emptyKeyboard = new ReplyKeyboardMarkup();
-        emptyKeyboard.setKeyboard(new ArrayList<>()); // Устанавливаем пустой список кнопок
-        return emptyKeyboard;
+        ReplyKeyboardRemove keyboardMarkup = new ReplyKeyboardRemove();
+        keyboardMarkup.setRemoveKeyboard(true);
+        return keyboardMarkup;
     }
 
     public ReplyKeyboardMarkup getKeyBoard(String listCarsOrParts){
@@ -156,11 +149,12 @@ public class Logic extends TelegramLongPollingBot {
         SendMessage message = new SendMessage();
         message.setChatId(String.valueOf(chatId));
         message.setText(textToSend);
-        Commands command = new Commands();
         if (carOrParts == "cars")
             message.setReplyMarkup(getKeyBoard(getNameCars()));
         if (carOrParts == "parts")
             message.setReplyMarkup(getKeyBoard(getParts(car)));
+        if (carOrParts == "delete")
+            message.setReplyMarkup(removeKeyboard());
         try {
             execute(message);
         }
