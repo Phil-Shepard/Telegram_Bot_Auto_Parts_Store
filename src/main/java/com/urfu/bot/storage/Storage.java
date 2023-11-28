@@ -4,9 +4,9 @@ import com.urfu.bot.domain.car.Bmw;
 import com.urfu.bot.domain.car.Car;
 import com.urfu.bot.domain.car.Lada;
 import com.urfu.bot.domain.car.Renault;
-import com.urfu.bot.domain.headlights.Headlights;
-import com.urfu.bot.domain.wheels.Wheels;
-import com.urfu.bot.domain.wipers.Wipers;
+import com.urfu.bot.domain.spareParts.headlights.Headlights;
+import com.urfu.bot.domain.spareParts.wheels.Wheels;
+import com.urfu.bot.domain.spareParts.wipers.Wipers;
 
 import java.util.ArrayList;
 import java.util.List;
