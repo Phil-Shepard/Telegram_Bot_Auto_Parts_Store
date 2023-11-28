@@ -4,6 +4,9 @@ import com.urfu.bot.domain.car.Car;
 
 import java.util.List;
 
+/**
+ * Описывает машину
+ */
 public interface CarService {
 
     /**

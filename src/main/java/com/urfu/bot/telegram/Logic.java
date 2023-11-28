@@ -29,6 +29,9 @@ public class Logic {
             SendMessage message = new SendMessage();
             message.setChatId(String.valueOf(chatId));
             switch (messageText){
+                case command_basket:
+                    commands.
+                    break;
                 case command_start:
                     commands.startCommandReceived(message, update.getMessage().getChat().getFirstName());
                     bot.sendMessage(message);
