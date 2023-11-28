@@ -11,19 +11,38 @@ import com.urfu.bot.domain.car.Car;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Класс, содержащий все используемые методы(команды)
+ */
 public class Commands{
+    /**
+     * Выводит сообщением наименования машин, на которые имеются комплектующие,
+     *  а также выводит соответствующие кнопки с наименованием машиин.
+     * @param message
+     * @param carService
+     */
     public void GetShop(SendMessage message, CarServiceImpl carService){
         String answer = "В наличии комплектующиие для автомобилей: \n" + carService.GetNamesCars();
         message.setReplyMarkup(getKeyBoard(getNameCars()));
         message.setText(answer);
     }
 
+    /**
+     * Выводит сообщением и в ввиде кнопок наличие запчастей на выбранный зараее автомобиль.
+     * @param message
+     * @param car
+     */
     public void takeCarParts(SendMessage message, Car car) {
         String answer = car.getAvailabilityParts();
         message.setReplyMarkup(getKeyBoard(getParts(car)));
         message.setText(answer);
     }
 
+    /**
+     * Выводит приветствие и список возможных команд.
+     * @param message
+     * @param name
+     */
     public void startCommandReceived(SendMessage message, String name)  {
         String answer = "Привет, " + name +  ", Это телеграмм бот магазина  автозапчастей." +
                 " Доступны следующие команды:\n" +
@@ -39,12 +58,21 @@ public class Commands{
         message.setText(answer);
     }
 
+    /**
+     * Удаляет кнопки.
+     * @return
+     */
     public ReplyKeyboardRemove removeKeyboard() {
         ReplyKeyboardRemove keyboardMarkup = new ReplyKeyboardRemove();
         keyboardMarkup.setRemoveKeyboard(true);
         return keyboardMarkup;
     }
 
+    /**
+     * Формирует и выводит кнопки.
+     * @param listCarsOrParts
+     * @return
+     */
     public ReplyKeyboardMarkup getKeyBoard(String listCarsOrParts){
         String[] buttons = listCarsOrParts.split(" ");
         ReplyKeyboardMarkup keyboardMarkup = new ReplyKeyboardMarkup();
@@ -59,6 +87,10 @@ public class Commands{
         return keyboardMarkup;
     }
 
+    /**
+     * Возвращает все названия машин, на которые есть запчасти.
+     * @return
+     */
     public String getNameCars(){
         Storage storage = new Storage();
         List<Car> listCars = storage.getStorage();
@@ -70,6 +102,11 @@ public class Commands{
         return nameCars;
     }
 
+    /**
+     * Возвращает список имеющихся запчастей на конкретную машину в виде строки.
+     * @param car
+     * @return
+     */
     public String getParts(Car car){
         String parts = car.getAvailabilityParts();
         return parts;

@@ -6,7 +6,9 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import static com.urfu.bot.telegram.Constants.*;
 
-
+/**
+ * Описывает логику бота.
+ */
 public class Logic {
     private final Commands commands = new Commands();
     private final Bot bot;
@@ -15,6 +17,10 @@ public class Logic {
         this.bot = bot;
     }
 
+    /**
+     *  Точка входа, куда будут поступать сообщения от пользователей. Отсюда будет идти вся новая логика.
+     * @param update
+     */
     public void onUpdateReceived(Update update) {
         if(update.hasMessage() && update.getMessage().hasText()){
             CarServiceImpl carService = new CarServiceImpl();

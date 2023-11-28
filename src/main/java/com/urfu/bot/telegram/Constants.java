@@ -27,6 +27,11 @@ public class Constants {
             "/delete\n" +
             "/exit\n" +
             "/help";
+
+    /**
+     * Возвращает лист команд, которые будут доступны.
+     * @return
+     */
     public static List<BotCommand> listOfCommands() {
         List<BotCommand> listOfCommands = new ArrayList<>();
         listOfCommands.add(new BotCommand("/start", "Это телеграмм бот магазина автозапчастей."));
