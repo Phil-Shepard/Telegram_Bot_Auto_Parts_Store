@@ -6,6 +6,14 @@ import org.mockito.*;
 import org.telegram.telegrambots.meta.api.objects.Chat;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardButton;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import static com.urfu.bot.telegram.Constants.*;
 
 
@@ -88,6 +96,15 @@ public class TestLogic {
 
         logic.onUpdateReceived(createUpdate(COMMAND_SHOP));
 
-        Assert.assertEquals("В наличии комплектующиие для автомобилей: \n" + " BMW, Renault, Lada", fakeBot.getLastMessage());
+        Assert.assertEquals("В наличии комплектующиие для автомобилей: \n" +
+                " BMW, Renault, Lada", fakeBot.getLastMessage());
+
+        ReplyKeyboardMarkup keyboardMarkup = (ReplyKeyboardMarkup)fakeBot.getMessage().getReplyMarkup();
+        List<KeyboardRow> keyboardRows = keyboardMarkup.getKeyboard();
+
+        Assert.assertFalse(keyboardRows.isEmpty());
+
+        String buttons = keyboardRows.get(0).stream().map(KeyboardButton::getText).collect(Collectors.joining(" "));
+        Assert.assertEquals("BMW Renault Lada", buttons);
     }
 }
