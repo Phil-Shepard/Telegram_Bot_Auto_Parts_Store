@@ -1,6 +1,7 @@
 package com.urfu.bot.telegram;
 
 import com.urfu.bot.commands.Commands;
+import com.urfu.bot.services.basket.BasketServiceImpl;
 import com.urfu.bot.services.car.CarServiceImpl;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -12,6 +13,9 @@ import static com.urfu.bot.telegram.Constants.*;
 public class Logic {
     private final Commands commands = new Commands();
     private final Bot bot;
+    private BasketServiceImpl basket = new BasketServiceImpl();
+
+    private int countParts = 1;
 
     public Logic(Bot bot){
         this.bot = bot;
@@ -29,6 +33,30 @@ public class Logic {
             SendMessage message = new SendMessage();
             message.setChatId(String.valueOf(chatId));
             switch (messageText){
+                case command_add:
+                    message.setText(commands.addSparePartInBasket(basket, update.getMessage().getText().split(" ")[1], countParts));
+                    countParts++;
+                    bot.sendMessage(message);
+                    break;
+                case command_wheels:
+                    message.setText(commands.addSparePartInBasket(basket, "колёса", countParts));
+                    countParts++;
+                    bot.sendMessage(message);
+                    break;
+                case command_wipers:
+                    message.setText(commands.addSparePartInBasket(basket, "дворники", countParts));
+                    countParts++;
+                    bot.sendMessage(message);
+                    break;
+                case command_headlights:
+                    message.setText(commands.addSparePartInBasket(basket, "фары", countParts));
+                    countParts++;
+                    bot.sendMessage(message);
+                    break;
+                case command_basket:
+                    message.setText(commands.getBasket(basket));
+                    bot.sendMessage(message);
+                    break;
                 case command_start:
                     commands.startCommandReceived(message, update.getMessage().getChat().getFirstName());
                     bot.sendMessage(message);

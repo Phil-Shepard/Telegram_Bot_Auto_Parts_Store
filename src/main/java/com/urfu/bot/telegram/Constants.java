@@ -18,6 +18,9 @@ public class Constants {
     public static final String command_history = "/history";
     public static final String command_delete = "/delete";
     public static final String command_help = "/help";
+    public static final String command_wheels = "колёса";
+    public static final String command_wipers = "дворники";
+    public static final String command_headlights = "фары";
     public static final String HELP = "Справка о дуступных командах:\n" +
             "/shop\n" +
             "/add\n" +

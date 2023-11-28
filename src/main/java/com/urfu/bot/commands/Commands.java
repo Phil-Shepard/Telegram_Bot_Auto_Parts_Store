@@ -1,5 +1,6 @@
 package com.urfu.bot.commands;
 
+import com.urfu.bot.services.basket.BasketServiceImpl;
 import com.urfu.bot.services.car.CarServiceImpl;
 import com.urfu.bot.storage.Storage;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -110,5 +111,28 @@ public class Commands{
     public String getParts(Car car){
         String parts = car.getAvailabilityParts();
         return parts;
+    }
+
+    /**
+     * Добавляет выбранную запчасть в корзину.
+     * @param basket корзина для добавления, sparePart запчасть, count номер запчасти в корзине
+     * @return заполненную корзину
+     */
+    public String addSparePartInBasket(BasketServiceImpl basket, String sparePart, int countParts) {
+        if (countParts == 1){
+            basket.contentsBasket = countParts + ") \"" + sparePart + "\"\n";
+        }
+        else
+            basket.contentsBasket += countParts + ") \"" + sparePart + "\"\n";
+        return "Товар " + sparePart + " успешно добавлен в корзину.";
+    }
+    /**
+     * Возвращает содержимое корзины
+     * @return содержимое корзины
+     */
+    public String getBasket(BasketServiceImpl basket){
+        if (basket.getContentsBasket() == null)
+            return "Ваша корзина пуста, добавьте товар в корзину.";
+        return basket.getContentsBasket();
     }
 }

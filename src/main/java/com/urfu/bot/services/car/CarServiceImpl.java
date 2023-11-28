@@ -6,6 +6,9 @@ import com.urfu.bot.storage.Storage;
 
 import java.util.List;
 
+/**
+ * Описывает машину
+ */
 public class CarServiceImpl implements CarService{
 
     @Override
