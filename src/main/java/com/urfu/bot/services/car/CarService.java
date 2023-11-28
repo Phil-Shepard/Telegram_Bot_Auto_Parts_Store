@@ -6,10 +6,23 @@ import java.util.List;
 
 public interface CarService {
 
-    public List<Car> getCars();
+    /**
+     * Возвращает список машин, на которые есть запчасти.
+     * @return
+     */
+    List<Car> getCars();
 
-    public String GetNamesCars();
+    /**
+     * Возвращает список машин, на которые есть запчасти в формате строки.
+     * @return
+     */
+    String GetNamesCars();
 
-    public Car getCar(String name);
+    /**
+     * Возвращает машину по её имени.
+     * @param name
+     * @return
+     */
+    Car getCar(String name);
 
 }
