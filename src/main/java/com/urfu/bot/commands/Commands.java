@@ -10,7 +10,9 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.Keyboard
 import com.urfu.bot.domain.car.Car;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Класс, содержащий все используемые методы(команды)
@@ -118,21 +120,49 @@ public class Commands{
      * @param basket корзина для добавления, sparePart запчасть, count номер запчасти в корзине
      * @return заполненную корзину
      */
-    public String addSparePartInBasket(BasketServiceImpl basket, String sparePart, int countParts) {
+    public String addSparePartInBasket(BasketServiceImpl basket, String carName, String sparePart, int countParts) {
+        String contentsBasket = "";
         if (countParts == 1){
-            basket.contentsBasket = countParts + ") \"" + sparePart + "\"\n";
+            basket.contentsBasket.put(carName, basket.contentsBasket.getOrDefault(carName, "") + countParts + ") \"" + sparePart + "\"\n");
         }
         else
-            basket.contentsBasket += countParts + ") \"" + sparePart + "\"\n";
+            basket.contentsBasket.put(carName, basket.contentsBasket.getOrDefault(carName, "") + countParts + ") \"" + sparePart + "\"\n");
+
         return "Товар " + sparePart + " успешно добавлен в корзину.";
     }
     /**
      * Возвращает содержимое корзины
      * @return содержимое корзины
      */
-    public String getBasket(BasketServiceImpl basket){
+    public String getBasket(BasketServiceImpl basket) {
+        String answer = "";
         if (basket.getContentsBasket() == null)
             return "Ваша корзина пуста, добавьте товар в корзину.";
-        return basket.getContentsBasket();
+//        for (Map.Entry<String, String> entry : basket.contentsBasket.entrySet())
+//            return String.format("%s: %s%n", entry.getKey(), entry.getValue());
+//        for(Map.Entry<String, String> entry : basket.contentsBasket.entrySet()){
+//            return String.format(entry.getKey() + " : " + entry.getValue());
+//        }
+        for (Map.Entry<String, String> entry : basket.contentsBasket.entrySet()) {
+            String key = entry.getKey();
+            String value = entry.getValue();
+            answer += key + "\n" + " " + value + "\n";
+        }
+        return answer;
     }
+
+//    public String deletePartFromBasket(BasketServiceImpl basket, String sparePart){
+//        basket.contentsBasket = basket.contentsBasket.replace(sparePart, "");
+//        String contentsBasket = basket.contentsBasket;
+//        contentsBasket.replace(" ", "");
+//        String filanContetsBasket = "";
+//        String[] parts = contentsBasket.split(" ");
+//        for (String part : parts) {
+//            if (part != "") {
+//                filanContetsBasket += part + "\n";
+//            }
+//        }
+//        basket.contentsBasket = filanContetsBasket;
+//        return "Товар " + sparePart + " удален из корзины.";
+//    }
 }

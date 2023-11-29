@@ -9,6 +9,7 @@ import java.util.List;
  * Класс для текстовых констант
  */
 public class Constants {
+    public String numberPart;
     public static final String command_start = "/start";
     public static final String command_exit = "/exit";
     public static final String command_shop = "/shop";
@@ -21,6 +22,9 @@ public class Constants {
     public static final String command_wheels = "колёса";
     public static final String command_wipers = "дворники";
     public static final String command_headlights = "фары";
+    public static final String command_delete_wheels = "delete колёса";
+    public static final String command_delete_wipers = "delete дворники";
+    public static final String command_delete_headlights = "delete фары";
     public static final String HELP = "Справка о дуступных командах:\n" +
             "/shop\n" +
             "/add\n" +

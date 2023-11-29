@@ -17,6 +17,8 @@ public class Logic {
 
     private int countParts = 1;
 
+    private String nameCar = "";
+
     public Logic(Bot bot){
         this.bot = bot;
     }
@@ -33,23 +35,22 @@ public class Logic {
             SendMessage message = new SendMessage();
             message.setChatId(String.valueOf(chatId));
             switch (messageText){
-                case command_add:
-                    message.setText(commands.addSparePartInBasket(basket, update.getMessage().getText().split(" ")[1], countParts));
-                    countParts++;
-                    bot.sendMessage(message);
-                    break;
+//                case command_delete_wheels:
+//                    message.setText(commands.deletePartFromBasket(basket, "колёса"));
+//                    bot.sendMessage(message);
+//                    break;
                 case command_wheels:
-                    message.setText(commands.addSparePartInBasket(basket, "колёса", countParts));
+                    message.setText(commands.addSparePartInBasket(basket, nameCar,"колёса", countParts));
                     countParts++;
                     bot.sendMessage(message);
                     break;
                 case command_wipers:
-                    message.setText(commands.addSparePartInBasket(basket, "дворники", countParts));
+                    message.setText(commands.addSparePartInBasket(basket, nameCar,"дворники", countParts));
                     countParts++;
                     bot.sendMessage(message);
                     break;
                 case command_headlights:
-                    message.setText(commands.addSparePartInBasket(basket, "фары", countParts));
+                    message.setText(commands.addSparePartInBasket(basket, nameCar,"фары", countParts));
                     countParts++;
                     bot.sendMessage(message);
                     break;
@@ -71,14 +72,17 @@ public class Logic {
                     bot.sendMessage(message);
                     break;
                 case "BMW":
+                    nameCar = "BMW";
                     commands.takeCarParts(message, carService.getCar("BMW"));
                     bot.sendMessage(message);
                     break;
                 case "Renault":
+                    nameCar = "Renault";
                     commands.takeCarParts(message, carService.getCar("Renault"));
                     bot.sendMessage(message);
                     break;
                 case "Lada":
+                    nameCar = "Lada";
                     commands.takeCarParts(message, carService.getCar("Lada"));
                     bot.sendMessage(message);
                     break;
