@@ -196,8 +196,48 @@ public class Commands {
             map.put(key, newValue.toString().trim());
         }
     }
+
+    /**
+     * Полностью очищает корзину
+     * @param basket корзина
+     * @return уведомление о том, что корзина очищена.
+     */
     public String deleteAllPartsFromBasket(BasketServiceImpl basket) {
         basket.contentsBasket.clear();
         return "Корзина очищена";
+    }
+
+    /**
+     * Этот метод нужен для того, чтобы мы могли заказать запчасти для одного автомобиля, затем для второго
+     * и когда вернёмся к первому и начнём снова заказывать наша корзина будет правильно считать последовательность
+     * с нужного нам числа
+     * @param basket корзина, в которой мы храним товары
+     * @param key Машина, к выбору товаров для которой мы вернулись
+     * @return Число, которое показывает, какая по счёту будет следующая запчасть для выбранной машины
+     */
+    public int getSpartCount(BasketServiceImpl basket, String key) {
+        int number = 0;
+        if (basket.contentsBasket.isEmpty() || !basket.contentsBasket.containsKey(key)){
+            return 1;
+        }
+        String basketString = basket.contentsBasket.get(key);
+
+        // Разбиваем строку на подстроки по символу ") "
+        String[] parts = basketString.split("\\) ");
+
+        // Выбираем последнюю подстроку
+        String lastPart = parts[parts.length - 1];
+
+        // Извлекаем цифру из последней подстроки
+        String[] lastPartParts = lastPart.split("\\) ");
+        String lastNumber = lastPartParts[0];
+        String[] words = lastNumber.split("\\D+"); // Разделяем строку по нечисловым символам
+        for (String word : words) {
+            if (!word.isEmpty()) {
+                number = Integer.parseInt(word); // Преобразуем строку в число
+                break;
+            }
+        }
+        return number + 1;
     }
 }

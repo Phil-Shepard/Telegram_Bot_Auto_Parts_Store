@@ -46,6 +46,7 @@ public class Logic {
                 case command_delete:
                     message.setText(commands.deleteAllPartsFromBasket(basket));
                     bot.sendMessage(message);
+                    sparePartCount = 1;
                     break;
                 case command_wheels:
                     message.setText(commands.addSparePartInBasket(basket, nameCar,"колёса", sparePartCount));
@@ -80,16 +81,19 @@ public class Logic {
                     bot.sendMessage(message);
                     break;
                 case "BMW":
+                    sparePartCount = commands.getSpartCount(basket, "BMW");
                     nameCar = "BMW";
                     commands.takeCarParts(message, carService.getCar("BMW"));
                     bot.sendMessage(message);
                     break;
                 case "Renault":
+                    sparePartCount = commands.getSpartCount(basket, "Renault");
                     nameCar = "Renault";
                     commands.takeCarParts(message, carService.getCar("Renault"));
                     bot.sendMessage(message);
                     break;
                 case "Lada":
+                    sparePartCount = commands.getSpartCount(basket, "Lada");
                     nameCar = "Lada";
                     commands.takeCarParts(message, carService.getCar("Lada"));
                     bot.sendMessage(message);
