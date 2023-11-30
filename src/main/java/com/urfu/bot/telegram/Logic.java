@@ -43,6 +43,10 @@ public class Logic {
                 }
             }
             switch (messageText){
+                case command_delete:
+                    message.setText(commands.deleteAllPartsFromBasket(basket));
+                    bot.sendMessage(message);
+                    break;
                 case command_wheels:
                     message.setText(commands.addSparePartInBasket(basket, nameCar,"колёса", sparePartCount));
                     bot.sendMessage(message);

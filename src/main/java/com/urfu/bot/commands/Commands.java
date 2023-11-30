@@ -138,7 +138,7 @@ public class Commands {
      */
     public String getBasket(BasketServiceImpl basket) {
         String answer = "";
-        if (basket.getContentsBasket() == null)
+        if (basket.contentsBasket.isEmpty())
             return "Ваша корзина пуста, добавьте товар в корзину.";
         for (Map.Entry<String, String> entry : basket.contentsBasket.entrySet()) {
             String key = entry.getKey();
@@ -196,5 +196,8 @@ public class Commands {
             map.put(key, newValue.toString().trim());
         }
     }
-
+    public String deleteAllPartsFromBasket(BasketServiceImpl basket) {
+        basket.contentsBasket.clear();
+        return "Корзина очищена";
+    }
 }
