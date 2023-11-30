@@ -7,7 +7,7 @@ import java.util.ArrayList;
 /**
  * Описывает сущность корзины, в которой буду храниться выбранные запчасти.
  */
-public abstract class Basket {
+public class Basket {
 
     ArrayList<SpareParts> contentsBasket;
 

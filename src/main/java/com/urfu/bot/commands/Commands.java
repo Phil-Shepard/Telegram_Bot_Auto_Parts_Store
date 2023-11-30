@@ -9,22 +9,20 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardRem
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 import com.urfu.bot.domain.car.Car;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Класс, содержащий все используемые методы(команды)
  */
-public class Commands{
+public class Commands {
     /**
      * Выводит сообщением наименования машин, на которые имеются комплектующие,
-     *  а также выводит соответствующие кнопки с наименованием машиин.
+     * а также выводит соответствующие кнопки с наименованием машиин.
+     *
      * @param message
      * @param carService
      */
-    public void GetShop(SendMessage message, CarServiceImpl carService){
+    public void GetShop(SendMessage message, CarServiceImpl carService) {
         String answer = "В наличии комплектующиие для автомобилей: \n" + carService.GetNamesCars();
         message.setReplyMarkup(getKeyBoard(getNameCars()));
         message.setText(answer);
@@ -32,6 +30,7 @@ public class Commands{
 
     /**
      * Выводит сообщением и в ввиде кнопок наличие запчастей на выбранный зараее автомобиль.
+     *
      * @param message
      * @param car
      */
@@ -43,11 +42,12 @@ public class Commands{
 
     /**
      * Выводит приветствие и список возможных команд.
+     *
      * @param message
      * @param name
      */
-    public void startCommandReceived(SendMessage message, String name)  {
-        String answer = "Привет, " + name +  ", Это телеграмм бот магазина  автозапчастей." +
+    public void startCommandReceived(SendMessage message, String name) {
+        String answer = "Привет, " + name + ", Это телеграмм бот магазина  автозапчастей." +
                 " Доступны следующие команды:\n" +
                 "/shop – Перейти в каталог запчастей.\n" +
                 "/add - добавить в корзину выбранную запчасть.\n" +
@@ -63,6 +63,7 @@ public class Commands{
 
     /**
      * Удаляет кнопки.
+     *
      * @return
      */
     public ReplyKeyboardRemove removeKeyboard() {
@@ -73,10 +74,11 @@ public class Commands{
 
     /**
      * Формирует и выводит кнопки.
+     *
      * @param listCarsOrParts
      * @return
      */
-    public ReplyKeyboardMarkup getKeyBoard(String listCarsOrParts){
+    public ReplyKeyboardMarkup getKeyBoard(String listCarsOrParts) {
         String[] buttons = listCarsOrParts.split(" ");
         ReplyKeyboardMarkup keyboardMarkup = new ReplyKeyboardMarkup();
         List<KeyboardRow> keyboardRows = new ArrayList<>();
@@ -92,77 +94,106 @@ public class Commands{
 
     /**
      * Возвращает все названия машин, на которые есть запчасти.
+     *
      * @return
      */
-    public String getNameCars(){
+    public String getNameCars() {
         Storage storage = new Storage();
         List<Car> listCars = storage.getStorage();
         String nameCars = "";
-        for (Car car: listCars
+        for (Car car : listCars
         ) {
-            nameCars += car.getName()+ " ";
+            nameCars += car.getName() + " ";
         }
         return nameCars;
     }
 
     /**
      * Возвращает список имеющихся запчастей на конкретную машину в виде строки.
+     *
      * @param car
      * @return
      */
-    public String getParts(Car car){
+    public String getParts(Car car) {
         String parts = car.getAvailabilityParts();
-        return parts;
+        return parts.replace(",", "");
     }
 
     /**
      * Добавляет выбранную запчасть в корзину.
+     *
      * @param basket корзина для добавления, sparePart запчасть, count номер запчасти в корзине
      * @return заполненную корзину
      */
-    public String addSparePartInBasket(BasketServiceImpl basket, String carName, String sparePart, int countParts) {
-        String contentsBasket = "";
-        if (countParts == 1){
-            basket.contentsBasket.put(carName, basket.contentsBasket.getOrDefault(carName, "") + countParts + ") \"" + sparePart + "\"\n");
-        }
-        else
-            basket.contentsBasket.put(carName, basket.contentsBasket.getOrDefault(carName, "") + countParts + ") \"" + sparePart + "\"\n");
-
+    public String addSparePartInBasket(BasketServiceImpl basket, String carName, String sparePart, int sparePartCount) {
+        basket.contentsBasket.put(carName, basket.contentsBasket
+                .getOrDefault(carName, "") + sparePartCount + ")" + "\"" + sparePart + "\"" + "\n");
         return "Товар " + sparePart + " успешно добавлен в корзину.";
     }
+
     /**
      * Возвращает содержимое корзины
+     * @param basket корзина
      * @return содержимое корзины
      */
     public String getBasket(BasketServiceImpl basket) {
         String answer = "";
         if (basket.getContentsBasket() == null)
             return "Ваша корзина пуста, добавьте товар в корзину.";
-//        for (Map.Entry<String, String> entry : basket.contentsBasket.entrySet())
-//            return String.format("%s: %s%n", entry.getKey(), entry.getValue());
-//        for(Map.Entry<String, String> entry : basket.contentsBasket.entrySet()){
-//            return String.format(entry.getKey() + " : " + entry.getValue());
-//        }
         for (Map.Entry<String, String> entry : basket.contentsBasket.entrySet()) {
             String key = entry.getKey();
             String value = entry.getValue();
-            answer += key + "\n" + " " + value + "\n";
+            answer += key + ":" + "\n" + value + "\n";
         }
         return answer;
     }
 
-//    public String deletePartFromBasket(BasketServiceImpl basket, String sparePart){
-//        basket.contentsBasket = basket.contentsBasket.replace(sparePart, "");
-//        String contentsBasket = basket.contentsBasket;
-//        contentsBasket.replace(" ", "");
-//        String filanContetsBasket = "";
-//        String[] parts = contentsBasket.split(" ");
-//        for (String part : parts) {
-//            if (part != "") {
-//                filanContetsBasket += part + "\n";
-//            }
-//        }
-//        basket.contentsBasket = filanContetsBasket;
-//        return "Товар " + sparePart + " удален из корзины.";
-//    }
+    /**
+     * Удаляет выбранную запчасть из корзины.
+     * @param basket корзина, из которой будем удалять.
+     * @param sparePart запчасть, которую будем удалять.
+     * @return уведомление о том, что товар удалён из корзины.
+     */
+    public String deletePartFromBasket(BasketServiceImpl basket, String sparePart) {
+        String message = sparePart;
+        String[] listMessage = message.split(" ");
+        if (basket.contentsBasket.containsKey(listMessage[0])) {
+            String value = basket.contentsBasket.get(listMessage[0]);
+            value = value.replace(listMessage[1], ""); // Удаление подстроки
+            value = value.replaceAll("\n{2,}", "\n"); // Удаление лишних пустых строк
+            basket.contentsBasket.put(listMessage[0], value);
+        }
+        return "Товар " + sparePart + " удален из корзины.";
+    }
+
+    /**
+     * После удаления запчасти из корзины этот метод формирует читабельный список в корзине:
+     * правильно номерует оставшиеся в корзине запчасти и удаляет лишние отступы.
+     * @param map корзина, которую метод форматирует.
+     * @param key название машины, запчасть которой до этого была удалена.
+     */
+    public void updateValue(HashMap<String, String> map, String key) {
+        if (map.containsKey(key)) {
+            String value = map.get(key);
+            // Удаляем пустые строки
+            value = value.replaceAll("(?m)^[ \t]*\r?\n", "");
+
+            // Разделяем строки по числам и сортируем по числам
+            String[] lines = value.split("\n");
+            TreeMap<Integer, String> sortedLines = new TreeMap<>();
+            for (String line : lines) {
+                int number = Integer.parseInt(line.split("\\)")[0].replaceAll("[^0-9]", ""));
+                sortedLines.put(number, line);
+            }
+
+            // Формируем новое значение
+            StringBuilder newValue = new StringBuilder();
+            int count = 1;
+            for (String line : sortedLines.values()) {
+                newValue.append(count).append(")").append(line.split("\\)")[1]).append("\n");
+                count++;
+            }
+            map.put(key, newValue.toString().trim());
+        }
+    }
 }

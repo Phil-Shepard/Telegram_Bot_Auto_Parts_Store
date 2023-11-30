@@ -17,7 +17,7 @@ public class Constants {
     public static final String command_add = "/add";
     public static final String command_order = "/order";
     public static final String command_history = "/history";
-    public static final String command_delete = "/delete";
+//    public static final String command_delete = "/delete";
     public static final String command_help = "/help";
     public static final String command_wheels = "колёса";
     public static final String command_wipers = "дворники";

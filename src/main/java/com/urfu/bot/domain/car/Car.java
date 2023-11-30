@@ -35,7 +35,7 @@ public abstract class Car {
      * @return
      */
     public String getAvailabilityParts(){
-        return getWheels() + " " + getHeadlights() + " " + getWipers();
+        return getWheels() + ", " + getHeadlights() + ", " + getWipers();
     }
 
     /**

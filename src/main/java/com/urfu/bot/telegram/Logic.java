@@ -14,10 +14,9 @@ public class Logic {
     private final Commands commands = new Commands();
     private final Bot bot;
     private BasketServiceImpl basket = new BasketServiceImpl();
-
-    private int countParts = 1;
-
     private String nameCar = "";
+
+    private int sparePartCount = 1;
 
     public Logic(Bot bot){
         this.bot = bot;
@@ -34,25 +33,30 @@ public class Logic {
             long chatId = update.getMessage().getChatId();
             SendMessage message = new SendMessage();
             message.setChatId(String.valueOf(chatId));
-            switch (messageText){
-//                case command_delete_wheels:
-//                    message.setText(commands.deletePartFromBasket(basket, "колёса"));
-//                    bot.sendMessage(message);
-//                    break;
-                case command_wheels:
-                    message.setText(commands.addSparePartInBasket(basket, nameCar,"колёса", countParts));
-                    countParts++;
+            if (messageText.startsWith("delete")) {
+                String argument = messageText.substring("delete".length()).trim();
+                if (!argument.isEmpty()) {
+                    commands.deletePartFromBasket(basket, argument);
+                    commands.updateValue(basket.contentsBasket, messageText.split(" ")[1]);
+                    message.setText("Вы удалили: " + argument);
                     bot.sendMessage(message);
+                }
+            }
+            switch (messageText){
+                case command_wheels:
+                    message.setText(commands.addSparePartInBasket(basket, nameCar,"колёса", sparePartCount));
+                    bot.sendMessage(message);
+                    sparePartCount++;
                     break;
                 case command_wipers:
-                    message.setText(commands.addSparePartInBasket(basket, nameCar,"дворники", countParts));
-                    countParts++;
+                    message.setText(commands.addSparePartInBasket(basket, nameCar,"дворники", sparePartCount));
                     bot.sendMessage(message);
+                    sparePartCount++;
                     break;
                 case command_headlights:
-                    message.setText(commands.addSparePartInBasket(basket, nameCar,"фары", countParts));
-                    countParts++;
+                    message.setText(commands.addSparePartInBasket(basket, nameCar,"фары", sparePartCount));
                     bot.sendMessage(message);
+                    sparePartCount++;
                     break;
                 case command_basket:
                     message.setText(commands.getBasket(basket));
@@ -90,9 +94,13 @@ public class Logic {
                     message.setText(HELP);
                     bot.sendMessage(message);
                      break;
+
                 default:
-                    message.setText("Команда не найдена");
-                    bot.sendMessage(message);
+                    if (!messageText.startsWith("delete "))
+                    {
+                        message.setText("Команда не найдена");
+                        bot.sendMessage(message);
+                    }
             }
         }
     }
