@@ -14,7 +14,7 @@ public class Constants {
     public static final String command_exit = "/exit";
     public static final String command_shop = "/shop";
     public static final String command_basket = "/basket";
-    public static final String command_add = "/add";
+//    public static final String command_add = "/add";
     public static final String command_order = "/order";
     public static final String command_history = "/history";
     public static final String command_delete = "/delete";
@@ -27,7 +27,6 @@ public class Constants {
     public static final String command_delete_headlights = "delete фары";
     public static final String HELP = "Справка о дуступных командах:\n" +
             "/shop\n" +
-            "/add\n" +
             "/basket\n" +
             "/order\n" +
             "/history\n" +
@@ -43,14 +42,12 @@ public class Constants {
         List<BotCommand> listOfCommands = new ArrayList<>();
         listOfCommands.add(new BotCommand("/start", "Это телеграмм бот магазина автозапчастей."));
         listOfCommands.add(new BotCommand("/shop","Перейти в каталог запчастей"));
-        listOfCommands.add(new BotCommand("/add","Добавить в корзину выбранную запчасть"));
         listOfCommands.add(new BotCommand("/basket","Вывести содержимое корзины"));
-        listOfCommands.add(new BotCommand("/order","Оформить заказ"));
+        listOfCommands.add(new BotCommand("/order","Оформить заказ на товары, лежащие в корзине"));
         listOfCommands.add(new BotCommand("/history","Вывести историю заказов"));
-        listOfCommands.add(new BotCommand("/delete","Удалить из корзины выбранные комплектующие"));
+        listOfCommands.add(new BotCommand("/delete","Полностью очистить корзину"));
         listOfCommands.add(new BotCommand("/exit","Выйти из каталога запчастей"));
         listOfCommands.add(new BotCommand("/help","Справка"));
         return listOfCommands;
     }
-
 }

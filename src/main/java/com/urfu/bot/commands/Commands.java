@@ -2,6 +2,7 @@ package com.urfu.bot.commands;
 
 import com.urfu.bot.services.basket.BasketServiceImpl;
 import com.urfu.bot.services.car.CarServiceImpl;
+import com.urfu.bot.services.history.HistoryServiceImpl;
 import com.urfu.bot.storage.Storage;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
@@ -50,7 +51,6 @@ public class Commands {
         String answer = "Привет, " + name + ", Это телеграмм бот магазина  автозапчастей." +
                 " Доступны следующие команды:\n" +
                 "/shop – Перейти в каталог запчастей.\n" +
-                "/add - добавить в корзину выбранную запчасть.\n" +
                 "/basket - вывести содержимое корзины.\n" +
                 "/order - оформить заказ\n" +
                 "/history - вывести историю заказов.\n" +
@@ -239,5 +239,28 @@ public class Commands {
             }
         }
         return number + 1;
+    }
+
+    /**
+     * Создаёт отчёт и вносит его в историю заказов, очищая корзину
+     * @param basket корзина, товары из которой попадают в отчёт
+     * @param history история заказов, которую мы заполняем
+     * @return Сообщение об успешном запасе, также возвращает содержимое заказа
+     */
+    public String makeOrder(BasketServiceImpl basket, HistoryServiceImpl history){
+        history.historyList.add(basket.contentsBasket);
+        return "Успешно заказано:" + "\n" + getBasket(basket);
+    }
+
+    public String getHistory(HistoryServiceImpl historyService){
+        StringBuilder result = new StringBuilder();
+        result.append("История ваших заказов:\n");
+        for (HashMap<String, String> order : historyService.historyList) {
+            for (Map.Entry<String, String> entry : order.entrySet()) {
+                result.append(entry.getKey()).append(":\n");
+                result.append(entry.getValue().replaceAll("(\\d+\\))", "$1"));
+            }
+        }
+        return result.toString();
     }
 }

@@ -3,6 +3,7 @@ package com.urfu.bot.telegram;
 import com.urfu.bot.commands.Commands;
 import com.urfu.bot.services.basket.BasketServiceImpl;
 import com.urfu.bot.services.car.CarServiceImpl;
+import com.urfu.bot.services.history.HistoryServiceImpl;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import static com.urfu.bot.telegram.Constants.*;
@@ -14,6 +15,7 @@ public class Logic {
     private final Commands commands = new Commands();
     private final Bot bot;
     private BasketServiceImpl basket = new BasketServiceImpl();
+    private HistoryServiceImpl history = new HistoryServiceImpl();
     private String nameCar = "";
 
     private int sparePartCount = 1;
@@ -43,6 +45,14 @@ public class Logic {
                 }
             }
             switch (messageText){
+                case command_history:
+                    message.setText(commands.getHistory(history));
+                    bot.sendMessage(message);
+                    break;
+                case command_order:
+                    message.setText(commands.makeOrder(basket, history));
+                    bot.sendMessage(message);
+                    break;
                 case command_delete:
                     message.setText(commands.deleteAllPartsFromBasket(basket));
                     bot.sendMessage(message);
