@@ -1,8 +1,10 @@
 package com.urfu.bot.services.car;
 
+import com.urfu.bot.domain.car.Car;
+
+import java.util.List;
+
 public interface CarService {
-<<<<<<< HEAD
-=======
 
     /**
      * Возвращает список машин, на которые есть запчасти.
@@ -23,5 +25,4 @@ public interface CarService {
      */
     Car getCar(String name);
 
->>>>>>> aca03c2 (Полностью описаны джава доки, переделан SpareParts)
 }

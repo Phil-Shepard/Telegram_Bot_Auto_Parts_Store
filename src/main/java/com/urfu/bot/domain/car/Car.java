@@ -1,8 +1,5 @@
 package com.urfu.bot.domain.car;
 
-<<<<<<< HEAD
-public class Car {
-=======
 import com.urfu.bot.domain.spareParts.wheels.Wheels;
 import com.urfu.bot.domain.spareParts.headlights.Headlights;
 import com.urfu.bot.domain.spareParts.wipers.Wipers;
@@ -69,5 +66,4 @@ public abstract class Car {
             return "";
         return wipers.getAvailability();
     }
->>>>>>> aca03c2 (Полностью описаны джава доки, переделан SpareParts)
 }
