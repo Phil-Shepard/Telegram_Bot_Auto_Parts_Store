@@ -1,0 +1,53 @@
+package com.urfu.bot.telegram;
+
+import org.telegram.telegrambots.meta.api.objects.commands.BotCommand;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Класс для текстовых констант
+ */
+public class Constants {
+    public String numberPart;
+    public static final String command_start = "/start";
+    public static final String command_exit = "/exit";
+    public static final String command_shop = "/shop";
+    public static final String command_basket = "/basket";
+//    public static final String command_add = "/add";
+    public static final String command_order = "/order";
+    public static final String command_history = "/history";
+    public static final String command_delete = "/delete";
+    public static final String command_help = "/help";
+    public static final String command_wheels = "колёса";
+    public static final String command_wipers = "дворники";
+    public static final String command_headlights = "фары";
+    public static final String command_delete_wheels = "delete колёса";
+    public static final String command_delete_wipers = "delete дворники";
+    public static final String command_delete_headlights = "delete фары";
+    public static final String HELP = "Справка о дуступных командах:\n" +
+            "/shop\n" +
+            "/basket\n" +
+            "/order\n" +
+            "/history\n" +
+            "/delete\n" +
+            "/exit\n" +
+            "/help";
+
+    /**
+     * Возвращает лист команд, которые будут доступны.
+     * @return
+     */
+    public static List<BotCommand> listOfCommands() {
+        List<BotCommand> listOfCommands = new ArrayList<>();
+        listOfCommands.add(new BotCommand("/start", "Это телеграмм бот магазина автозапчастей."));
+        listOfCommands.add(new BotCommand("/shop","Перейти в каталог запчастей"));
+        listOfCommands.add(new BotCommand("/basket","Вывести содержимое корзины"));
+        listOfCommands.add(new BotCommand("/order","Оформить заказ на товары, лежащие в корзине"));
+        listOfCommands.add(new BotCommand("/history","Вывести историю заказов"));
+        listOfCommands.add(new BotCommand("/delete","Полностью очистить корзину"));
+        listOfCommands.add(new BotCommand("/exit","Выйти из каталога запчастей"));
+        listOfCommands.add(new BotCommand("/help","Справка"));
+        return listOfCommands;
+    }
+}
