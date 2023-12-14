@@ -1,21 +1,19 @@
 package com.urfu.bot.domain.car;
 
-import com.urfu.bot.domain.spareParts.wheels.Wheels;
-import com.urfu.bot.domain.spareParts.headlights.Headlights;
-import com.urfu.bot.domain.spareParts.wipers.Wipers;
+import com.urfu.bot.domain.spareParts.SpareParts;
 
 /**
  * Описывает сущность машины
  */
 
-public abstract class Car {
+public class Car {
 
-    protected String name;
-    protected Wheels wheels;
-    protected Headlights headlights;
-    protected Wipers wipers;
+    private String name;
+    private SpareParts wheels;
+    private SpareParts headlights;
+    private SpareParts wipers;
 
-    public Car(String name, Wheels wheels, Headlights headlights, Wipers wipers){
+    public Car(String name, SpareParts wheels, SpareParts headlights, SpareParts wipers){
         this.name = name;
         this.wheels = wheels;
         this.headlights = headlights;
@@ -24,7 +22,6 @@ public abstract class Car {
 
     /**
      * Возвращает название машины
-     * @return
      */
     public String getName(){
         return name;
@@ -32,38 +29,17 @@ public abstract class Car {
 
     /**
      * Возвращает список запчастей, которые имеются на машину в виде строки
-     * @return
      */
     public String getAvailabilityParts(){
-        return getWheels() + " " + getHeadlights() + " " + getWipers();
+        return getAvailabilitySparePart(wheels) + " " + getAvailabilitySparePart(headlights) + " " + getAvailabilitySparePart(wipers);
     }
 
     /**
-     * Возвращает наличие колёс на выбранную машину в виде строки
-     * @return
+     * Возвращает название запчасти, если она есть в наличии, в качестве аргумента принимает саму запчасть
      */
-    public String getWheels(){
-        if (wheels.getAvailability() == null)
+    public String getAvailabilitySparePart(SpareParts sparePart){
+        if (sparePart.getName() == null)
             return "";
-        return wheels.getAvailability();
-    }
-
-    /**
-     * Возвращает наличие фар на выбранную машину в виде строки
-     * @return
-     */
-    public String getHeadlights(){
-        if (headlights.getAvailability() == null)
-            return "";
-        return headlights.getAvailability();
-    }
-    /**
-     * Возвращает наличие дворников на выбранную машину в виде строки
-     * @return
-     */
-    public String getWipers(){
-        if (wipers.getAvailability() == null)
-            return "";
-        return wipers.getAvailability();
+        return sparePart.getName();
     }
 }

@@ -9,15 +9,15 @@ import java.util.List;
  * Класс для текстовых констант
  */
 public class Constants {
-    public static final String command_start = "/start";
-    public static final String command_exit = "/exit";
-    public static final String command_shop = "/shop";
-    public static final String command_basket = "/basket";
-    public static final String command_add = "/add";
-    public static final String command_order = "/order";
-    public static final String command_history = "/history";
-    public static final String command_delete = "/delete";
-    public static final String command_help = "/help";
+    public static final String COMMAND_START = "/start";
+    public static final String COMMAND_EXIT = "/exit";
+    public static final String COMMAND_SHOP = "/shop";
+    public static final String COMMAND_BASKET = "/basket";
+    public static final String COMMAND_ADD = "/add";
+    public static final String COMMAND_ORDER = "/order";
+    public static final String COMMAND_HISTORY = "/history";
+    public static final String COMMAND_DELETE = "/delete";
+    public static final String COMMAND_HELP = "/help";
     public static final String HELP = "Справка о дуступных командах:\n" +
             "/shop\n" +
             "/add\n" +
@@ -32,7 +32,7 @@ public class Constants {
      * Возвращает лист команд, которые будут доступны.
      * @return
      */
-    public static List<BotCommand> listOfCommands() {
+    public List<BotCommand> listOfCommands() {
         List<BotCommand> listOfCommands = new ArrayList<>();
         listOfCommands.add(new BotCommand("/start", "Это телеграмм бот магазина автозапчастей."));
         listOfCommands.add(new BotCommand("/shop","Перейти в каталог запчастей"));

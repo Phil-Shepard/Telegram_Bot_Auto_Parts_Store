@@ -43,7 +43,7 @@ public class TestLogic {
         FakeBot fakeBot = new FakeBot();
         Logic logic = new Logic(fakeBot);
 
-        logic.onUpdateReceived(createUpdate(command_start));
+        logic.onUpdateReceived(createUpdate(COMMAND_START));
 
         Assert.assertEquals("Привет, " + "John" +  ", Это телеграмм бот магазина  автозапчастей." +
                 " Доступны следующие команды:\n" +
@@ -65,7 +65,7 @@ public class TestLogic {
         FakeBot fakeBot = new FakeBot();
         Logic logic = new Logic(fakeBot);
 
-        logic.onUpdateReceived(createUpdate(command_help));
+        logic.onUpdateReceived(createUpdate(COMMAND_HELP));
 
         Assert.assertEquals("Справка о дуступных командах:\n" +
                 "/shop\n" +
@@ -86,7 +86,7 @@ public class TestLogic {
         FakeBot fakeBot = new FakeBot();
         Logic logic = new Logic(fakeBot);
 
-        logic.onUpdateReceived(createUpdate(command_shop));
+        logic.onUpdateReceived(createUpdate(COMMAND_SHOP));
 
         Assert.assertEquals("В наличии комплектующиие для автомобилей: \n" + " BMW, Renault, Lada", fakeBot.getLastMessage());
     }

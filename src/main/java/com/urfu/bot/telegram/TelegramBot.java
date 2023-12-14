@@ -15,15 +15,16 @@ import static com.urfu.bot.telegram.Constants.*;
  */
 public class TelegramBot extends TelegramLongPollingBot implements Bot {
 
+    private final Constants constants = new Constants();
     private final Logic logic = new Logic(this);
     private final BotConfig config = new BotConfig();
 
-    public TelegramBot() {
+    public TelegramBot() throws TelegramApiException {
         try{
-            this.execute(new SetMyCommands(listOfCommands(), new BotCommandScopeDefault(), null));
+            this.execute(new SetMyCommands(constants.listOfCommands(), new BotCommandScopeDefault(), null));
         }
         catch (TelegramApiException e){
-            System.out.println(e);
+            throw new TelegramApiException("Ошибка работы бота!");
         }
     }
     @Override

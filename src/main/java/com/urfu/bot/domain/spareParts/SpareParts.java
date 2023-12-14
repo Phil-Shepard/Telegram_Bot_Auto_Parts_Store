@@ -1,9 +1,18 @@
 package com.urfu.bot.domain.spareParts;
 
-public interface SpareParts {
+/**
+ * Интерфейс запчастей
+ */
+public class SpareParts {
+    private String name;
+    public SpareParts(String name){
+        this.name = name;
+    }
+
     /**
-     * Возвращает наличие запачсти
-     * @return
+     * Возвращает название запачсти
      */
-    String getAvailability();
+    public String getName() {
+        return name;
+    }
 }
