@@ -2,7 +2,6 @@ package com.urfu.bot.telegram;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.mockito.*;
 import org.telegram.telegrambots.meta.api.objects.Chat;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -10,12 +9,10 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMar
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardButton;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.urfu.bot.telegram.Constants.*;
-
 
 /**
  * Класс тестов для проверки работы команд для бота
@@ -28,19 +25,17 @@ public class TestLogic {
      * @return мок объекта Update
      */
     private Update createUpdate(String command) {
-        Update updateMock = Mockito.mock(Update.class);
-        Message messageMock = Mockito.mock(Message.class);
-        Chat chatMock = Mockito.mock(Chat.class);
+        Update update = new Update();
+        Message message = new Message();
+        Chat chat = new Chat();
 
-        Mockito.when(updateMock.hasMessage()).thenReturn(true);
-        Mockito.when(updateMock.getMessage()).thenReturn(messageMock);
-        Mockito.when(messageMock.hasText()).thenReturn(true);
-        Mockito.when(messageMock.getText()).thenReturn(command);
-        Mockito.when(messageMock.getChatId()).thenReturn(0L);
-        Mockito.when(messageMock.getChat()).thenReturn(chatMock);
-        Mockito.when(chatMock.getFirstName()).thenReturn("John");
+        message.setText(command);
+        chat.setId(0L);
+        chat.setFirstName("John");
+        message.setChat(chat);
+        update.setMessage(message);
 
-        return updateMock;
+        return update;
     }
 
     /**
@@ -53,16 +48,17 @@ public class TestLogic {
 
         logic.onUpdateReceived(createUpdate(COMMAND_START));
 
-        Assert.assertEquals("Привет, " + "John" +  ", Это телеграмм бот магазина  автозапчастей." +
-                " Доступны следующие команды:\n" +
-                "/shop – Перейти в каталог запчастей.\n" +
-                "/add - добавить в корзину выбранную запчасть.\n" +
-                "/basket - вывести содержимое корзины.\n" +
-                "/order - оформить заказ\n" +
-                "/history - вывести историю заказов.\n" +
-                "/delete - удалить из корзины выбранные комплектующие.\n" +
-                "/exit - выйти из каталога запчастей.\n" +
-                "/help - Справка.\n", fakeBot.getLastMessage());
+        Assert.assertEquals("""
+                Привет, John, Это телеграмм бот магазина  автозапчастей. Доступны следующие команды:
+                /shop – Перейти в каталог запчастей.
+                /add - добавить в корзину выбранную запчасть.
+                /basket - вывести содержимое корзины.
+                /order - оформить заказ
+                /history - вывести историю заказов.
+                /delete - удалить из корзины выбранные комплектующие.
+                /exit - выйти из каталога запчастей.
+                /help - Справка.
+                """, fakeBot.getLastMessage());
     }
 
     /**
@@ -75,15 +71,16 @@ public class TestLogic {
 
         logic.onUpdateReceived(createUpdate(COMMAND_HELP));
 
-        Assert.assertEquals("Справка о дуступных командах:\n" +
-                "/shop\n" +
-                "/add\n" +
-                "/basket\n" +
-                "/order\n" +
-                "/history\n" +
-                "/delete\n" +
-                "/exit\n" +
-                "/help", fakeBot.getLastMessage());
+        Assert.assertEquals("""
+                Справка о дуступных командах:
+                /shop
+                /add
+                /basket
+                /order
+                /history
+                /delete
+                /exit
+                /help""", fakeBot.getLastMessage());
     }
 
     /**
@@ -96,8 +93,9 @@ public class TestLogic {
 
         logic.onUpdateReceived(createUpdate(COMMAND_SHOP));
 
-        Assert.assertEquals("В наличии комплектующиие для автомобилей: \n" +
-                " BMW, Renault, Lada", fakeBot.getLastMessage());
+        Assert.assertEquals("""
+                 В наличии комплектующие для автомобилей:
+                 BMW, Renault, Lada""", fakeBot.getLastMessage());
 
         ReplyKeyboardMarkup keyboardMarkup = (ReplyKeyboardMarkup)fakeBot.getMessage().getReplyMarkup();
         List<KeyboardRow> keyboardRows = keyboardMarkup.getKeyboard();
