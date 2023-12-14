@@ -1,6 +1,6 @@
 package com.urfu.bot.commands;
 
-import com.urfu.bot.services.car.CarServiceImpl;
+import com.urfu.bot.services.car.CarService;
 import com.urfu.bot.storage.Storage;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
@@ -18,19 +18,16 @@ public class Commands{
     /**
      * Выводит сообщением наименования машин, на которые имеются комплектующие,
      *  а также выводит соответствующие кнопки с наименованием машиин.
-     * @param message
-     * @param carService
      */
-    public void GetShop(SendMessage message, CarServiceImpl carService){
-        String answer = "В наличии комплектующиие для автомобилей: \n" + carService.GetNamesCars();
+    public void getShop(SendMessage message, CarService carService){
+        String answer = "В наличии комплектующие для автомобилей:\n"
+                + carService.GetNamesCars();
         message.setReplyMarkup(getKeyBoard(getNameCars()));
         message.setText(answer);
     }
 
     /**
      * Выводит сообщением и в ввиде кнопок наличие запчастей на выбранный зараее автомобиль.
-     * @param message
-     * @param car
      */
     public void takeCarParts(SendMessage message, Car car) {
         String answer = car.getAvailabilityParts();
@@ -39,9 +36,7 @@ public class Commands{
     }
 
     /**
-     * Выводит приветствие и список возможных команд.
-     * @param message
-     * @param name
+     * Записывает в ответ приветствие и список возможных команд, передаёт этот ответ в сообщение.
      */
     public void startCommandReceived(SendMessage message, String name)  {
         String answer = "Привет, " + name +  ", Это телеграмм бот магазина  автозапчастей." +
@@ -60,7 +55,6 @@ public class Commands{
 
     /**
      * Удаляет кнопки.
-     * @return
      */
     public ReplyKeyboardRemove removeKeyboard() {
         ReplyKeyboardRemove keyboardMarkup = new ReplyKeyboardRemove();
@@ -70,8 +64,6 @@ public class Commands{
 
     /**
      * Формирует и выводит кнопки.
-     * @param listCarsOrParts
-     * @return
      */
     public ReplyKeyboardMarkup getKeyBoard(String listCarsOrParts){
         String[] buttons = listCarsOrParts.split(" ");
@@ -89,26 +81,21 @@ public class Commands{
 
     /**
      * Возвращает все названия машин, на которые есть запчасти.
-     * @return
      */
     public String getNameCars(){
         Storage storage = new Storage();
         List<Car> listCars = storage.getStorage();
-        String nameCars = "";
-        for (Car car: listCars
-        ) {
-            nameCars += car.getName()+ " ";
+        StringBuilder nameCars = new StringBuilder();
+        for (Car car: listCars) {
+            nameCars.append(car.getName()).append(" ");
         }
-        return nameCars;
+        return nameCars.toString();
     }
 
     /**
      * Возвращает список имеющихся запчастей на конкретную машину в виде строки.
-     * @param car
-     * @return
      */
     public String getParts(Car car){
-        String parts = car.getAvailabilityParts();
-        return parts;
+        return car.getAvailabilityParts();
     }
 }

@@ -1,7 +1,7 @@
 package com.urfu.bot.telegram;
 
 import com.urfu.bot.commands.Commands;
-import com.urfu.bot.services.car.CarServiceImpl;
+import com.urfu.bot.services.car.CarService;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import static com.urfu.bot.telegram.Constants.*;
@@ -11,6 +11,7 @@ import static com.urfu.bot.telegram.Constants.*;
  */
 public class Logic {
     private final Commands commands = new Commands();
+    private CarService carService = new CarService();
     private final Bot bot;
 
     public Logic(Bot bot){
@@ -23,23 +24,22 @@ public class Logic {
      */
     public void onUpdateReceived(Update update) {
         if(update.hasMessage() && update.getMessage().hasText()){
-            CarServiceImpl carService = new CarServiceImpl();
             String messageText = update.getMessage().getText();
             long chatId = update.getMessage().getChatId();
             SendMessage message = new SendMessage();
             message.setChatId(String.valueOf(chatId));
             switch (messageText){
-                case command_start:
+                case COMMAND_START:
                     commands.startCommandReceived(message, update.getMessage().getChat().getFirstName());
                     bot.sendMessage(message);
                     break;
-                case command_exit:
+                case COMMAND_EXIT:
                     message.setReplyMarkup(commands.removeKeyboard());
                     message.setText("Вы закрыли каталог товаров");
                     bot.sendMessage(message);
                     break;
-                case command_shop:
-                    commands.GetShop(message, carService);
+                case COMMAND_SHOP:
+                    commands.getShop(message, carService);
                     bot.sendMessage(message);
                     break;
                 case "BMW":
@@ -54,7 +54,7 @@ public class Logic {
                     commands.takeCarParts(message, carService.getCar("Lada"));
                     bot.sendMessage(message);
                     break;
-                case command_help:
+                case COMMAND_HELP:
                     message.setText(HELP);
                     bot.sendMessage(message);
                      break;
