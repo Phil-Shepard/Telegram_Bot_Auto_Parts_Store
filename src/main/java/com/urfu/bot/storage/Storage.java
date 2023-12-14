@@ -22,13 +22,21 @@ public class Storage {
 
     /**
      * Возвращает список машин.
-     * @return
+     * @return listCars
      */
     public List<Car> getStorage(){
-        listCars.clear();
-        listCars.add(bmw);
-        listCars.add(renault);
-        listCars.add(lada);
+        AddStorage();
         return listCars;
+    }
+
+    /**
+     * Заполняет список машин
+     */
+    public void AddStorage(){
+        if (listCars.isEmpty()){
+            listCars.add(bmw);
+            listCars.add(renault);
+            listCars.add(lada);
+        }
     }
 }

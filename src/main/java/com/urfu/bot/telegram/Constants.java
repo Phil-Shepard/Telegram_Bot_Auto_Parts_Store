@@ -32,7 +32,7 @@ public class Constants {
      * Возвращает лист команд, которые будут доступны.
      * @return
      */
-    public static List<BotCommand> listOfCommands() {
+    public List<BotCommand> listOfCommands() {
         List<BotCommand> listOfCommands = new ArrayList<>();
         listOfCommands.add(new BotCommand("/start", "Это телеграмм бот магазина автозапчастей."));
         listOfCommands.add(new BotCommand("/shop","Перейти в каталог запчастей"));
