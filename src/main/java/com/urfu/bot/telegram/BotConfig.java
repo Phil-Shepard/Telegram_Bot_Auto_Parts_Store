@@ -4,8 +4,8 @@ package com.urfu.bot.telegram;
  * Необходимая конфигурационная информация для бота.
  */
 public class BotConfig {
-    private final String botName = "EKBAutoPartsStoreBot";
-    private final String botToken = "6661500007:AAFEMtc9b4GSHMvynNhimKRopwNPdsQaQ2U";
+    private final String botName = System.getenv("NAME");
+    private final String botToken =  System.getenv("TOKEN");
 
     /**
      * Возвращает необходимый для работы бота токен.
