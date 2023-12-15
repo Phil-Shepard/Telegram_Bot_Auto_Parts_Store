@@ -1,6 +1,6 @@
-package com.urfu.bot;
+package com.urfu;
 
-import com.urfu.bot.telegram.TelegramBot;
+import com.urfu.bot.TelegramBot;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;

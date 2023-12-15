@@ -1,9 +1,8 @@
-package com.urfu.bot.storage;
+package com.urfu.storage;
 
-import com.urfu.bot.domain.car.Car;
-import com.urfu.bot.domain.spareParts.SpareParts;
+import com.urfu.domain.car.Car;
+import com.urfu.domain.spareParts.SpareParts;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**

@@ -1,6 +1,6 @@
-package com.urfu.bot.domain.car;
+package com.urfu.domain.car;
 
-import com.urfu.bot.domain.spareParts.SpareParts;
+import com.urfu.domain.spareParts.SpareParts;
 
 /**
  * Описывает сущность машины
@@ -8,10 +8,10 @@ import com.urfu.bot.domain.spareParts.SpareParts;
 
 public class Car {
 
-    private String name;
-    private SpareParts wheels;
-    private SpareParts headlights;
-    private SpareParts wipers;
+    private final String name;
+    private final SpareParts wheels;
+    private final SpareParts headlights;
+    private final SpareParts wipers;
 
     public Car(String name, SpareParts wheels, SpareParts headlights, SpareParts wipers){
         this.name = name;

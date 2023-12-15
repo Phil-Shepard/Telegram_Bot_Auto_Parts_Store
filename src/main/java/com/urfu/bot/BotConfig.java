@@ -1,4 +1,4 @@
-package com.urfu.bot.telegram;
+package com.urfu.bot;
 
 /**
  * Необходимая конфигурационная информация для бота.
@@ -9,7 +9,6 @@ public class BotConfig {
 
     /**
      * Возвращает необходимый для работы бота токен.
-     * @return
      */
     public String getBotToken(){
         return botToken;
@@ -17,7 +16,6 @@ public class BotConfig {
 
     /**
      * Возвращает имя нашего бота.
-     * @return
      */
     public String getBotName(){
         return botName;

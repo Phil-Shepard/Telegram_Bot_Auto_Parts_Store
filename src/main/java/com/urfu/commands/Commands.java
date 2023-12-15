@@ -1,12 +1,12 @@
-package com.urfu.bot.commands;
+package com.urfu.commands;
 
-import com.urfu.bot.services.car.CarService;
-import com.urfu.bot.storage.Storage;
+import com.urfu.services.CarService;
+import com.urfu.storage.Storage;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardRemove;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
-import com.urfu.bot.domain.car.Car;
+import com.urfu.domain.car.Car;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +21,7 @@ public class Commands{
      */
     public void getShop(SendMessage message, CarService carService){
         String answer = "В наличии комплектующие для автомобилей:\n"
-                + carService.GetNamesCars();
+                + carService.getNamesCars();
         message.setReplyMarkup(getKeyBoard(getNameCars()));
         message.setText(answer);
     }
@@ -70,8 +70,7 @@ public class Commands{
         ReplyKeyboardMarkup keyboardMarkup = new ReplyKeyboardMarkup();
         List<KeyboardRow> keyboardRows = new ArrayList<>();
         KeyboardRow row = new KeyboardRow();
-        for (String button : buttons
-        ) {
+        for (String button : buttons) {
             row.add(button);
         }
         keyboardRows.add(row);

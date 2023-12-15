@@ -1,4 +1,4 @@
-package com.urfu.bot.telegram;
+package com.urfu.bot;
 
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 

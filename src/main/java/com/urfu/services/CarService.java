@@ -1,9 +1,9 @@
-package com.urfu.bot.services.car;
+package com.urfu.services;
 
-import com.urfu.bot.domain.car.Car;
-import com.urfu.bot.storage.Storage;
+import com.urfu.domain.car.Car;
+import com.urfu.storage.Storage;
 import java.util.List;
-import java.util.StringJoiner;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -22,10 +22,9 @@ public class CarService {
     /**
      * Возвращает имена машин через запятую(нужно для объявления имеющихся в магазине машин)
      */
-    public String GetNamesCars() {
+    public String getNamesCars() {
         List<Car> cars = getCars();
-        String names = cars.stream().map(Car::getName).collect(Collectors.joining(", "));
-        return names;
+        return cars.stream().map(Car::getName).collect(Collectors.joining(", "));
     }
 
     /**
@@ -34,7 +33,7 @@ public class CarService {
     public Car getCar(String name) {
         List<Car> cars = getCars();
         for (Car car: cars) {
-            if (car.getName() == name)
+            if (Objects.equals(car.getName(), name))
                 return car;
         }
         return cars.get(0);

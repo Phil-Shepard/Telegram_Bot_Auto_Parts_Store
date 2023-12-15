@@ -1,9 +1,10 @@
 package com.urfu.bot.telegram;
+import com.urfu.bot.Bot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FakeBot implements Bot{
+public class FakeBot implements Bot {
     private final List<String> messages = new ArrayList<>();
     private SendMessage message = new SendMessage();
 

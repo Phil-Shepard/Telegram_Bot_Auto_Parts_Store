@@ -1,5 +1,6 @@
 package com.urfu.bot.telegram;
 
+import com.urfu.bot.Logic;
 import org.junit.Assert;
 import org.junit.Test;
 import org.telegram.telegrambots.meta.api.objects.Chat;
@@ -12,7 +13,7 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.Keyboard
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.urfu.bot.telegram.Constants.*;
+import static com.urfu.bot.Constants.*;
 
 /**
  * Класс тестов для проверки работы команд для бота
