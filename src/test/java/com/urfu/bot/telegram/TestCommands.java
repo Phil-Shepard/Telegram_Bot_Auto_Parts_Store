@@ -1,6 +1,6 @@
 package com.urfu.bot.telegram;
 
-import com.urfu.bot.Logic;
+import com.urfu.commands.Commands;
 import org.junit.Assert;
 import org.junit.Test;
 import org.telegram.telegrambots.meta.api.objects.Chat;
@@ -18,7 +18,7 @@ import static com.urfu.bot.Constants.*;
 /**
  * Класс тестов для проверки работы команд для бота
  */
-public class TestLogic {
+public class TestCommands {
 
     /**
      * Метод создает моки объектов Update и заполняет список messages сообщениями от бота.
@@ -45,9 +45,9 @@ public class TestLogic {
     @Test
     public void testStart() {
         FakeBot fakeBot = new FakeBot();
-        Logic logic = new Logic(fakeBot);
+        Commands commands = new Commands(fakeBot);
 
-        logic.onUpdateReceived(createUpdate(COMMAND_START));
+        commands.onUpdateReceived(createUpdate(COMMAND_START));
 
         Assert.assertEquals("""
                 Привет, John, Это телеграмм бот магазина  автозапчастей. Доступны следующие команды:
@@ -68,9 +68,9 @@ public class TestLogic {
     @Test
     public void testHelp(){
         FakeBot fakeBot = new FakeBot();
-        Logic logic = new Logic(fakeBot);
+        Commands commands = new Commands(fakeBot);
 
-        logic.onUpdateReceived(createUpdate(COMMAND_HELP));
+        commands.onUpdateReceived(createUpdate(COMMAND_HELP));
 
         Assert.assertEquals("""
                 Справка о дуступных командах:
@@ -90,9 +90,9 @@ public class TestLogic {
     @Test
     public void testShop(){
         FakeBot fakeBot = new FakeBot();
-        Logic logic = new Logic(fakeBot);
+        Commands commands = new Commands(fakeBot);
 
-        logic.onUpdateReceived(createUpdate(COMMAND_SHOP));
+        commands.onUpdateReceived(createUpdate(COMMAND_SHOP));
 
         Assert.assertEquals("""
                  В наличии комплектующие для автомобилей:

@@ -1,100 +1,64 @@
 package com.urfu.commands;
 
+import com.urfu.bot.Bot;
+import com.urfu.bot.MessageFromUser;
+import com.urfu.bot.MessageToUser;
+import com.urfu.logic.Logic;
 import com.urfu.services.CarService;
-import com.urfu.storage.Storage;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardRemove;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
-import com.urfu.domain.car.Car;
 
-import java.util.ArrayList;
-import java.util.List;
+import static com.urfu.bot.Constants.*;
 
 /**
- * Класс, содержащий все используемые методы(команды)
+ * Описывает команды
  */
-public class Commands{
-    /**
-     * Выводит сообщением наименования машин, на которые имеются комплектующие,
-     *  а также выводит соответствующие кнопки с наименованием машиин.
-     */
-    public void getShop(SendMessage message, CarService carService){
-        String answer = "В наличии комплектующие для автомобилей:\n"
-                + carService.getNamesCars();
-        message.setReplyMarkup(getKeyBoard(getNameCars()));
-        message.setText(answer);
+public class Commands {
+    private final Logic logic = new Logic();
+    private final CarService carService = new CarService();
+    private final Bot bot;
+
+    public Commands(Bot bot) {
+        this.bot = bot;
     }
 
     /**
-     * Выводит сообщением и в ввиде кнопок наличие запчастей на выбранный зараее автомобиль.
+     * Точка входа, куда будут поступать сообщения от пользователей. Отсюда будет идти вся новая логика.
      */
-    public void takeCarParts(SendMessage message, Car car) {
-        String answer = car.getAvailabilityParts();
-        message.setReplyMarkup(getKeyBoard(getParts(car)));
-        message.setText(answer);
-    }
+    public void onUpdateReceived(MessageFromUser messageFromUser) {
+        if (messageFromUser.getMessage() != null && !messageFromUser.getMessage().isEmpty()) {
+            String messageText = messageFromUser.getMessage();
+            long chatId = messageFromUser.getChatId();
+            MessageToUser message = new MessageToUser();
+            message.setChatId(chatId);
 
-    /**
-     * Записывает в ответ приветствие и список возможных команд, передаёт этот ответ в сообщение.
-     */
-    public void startCommandReceived(SendMessage message, String name)  {
-        String answer = "Привет, " + name +  ", Это телеграмм бот магазина  автозапчастей." +
-                " Доступны следующие команды:\n" +
-                "/shop – Перейти в каталог запчастей.\n" +
-                "/add - добавить в корзину выбранную запчасть.\n" +
-                "/basket - вывести содержимое корзины.\n" +
-                "/order - оформить заказ\n" +
-                "/history - вывести историю заказов.\n" +
-                "/delete - удалить из корзины выбранные комплектующие.\n" +
-                "/exit - выйти из каталога запчастей.\n" +
-                "/help - Справка.\n";
-        message.setReplyMarkup(removeKeyboard());
-        message.setText(answer);
-    }
+            switch (messageText) {
+                case COMMAND_START -> {
+                    logic.startCommandReceived(message, messageFromUser.getUserName());
+                }
+                case COMMAND_EXIT -> {
+                    message.setRemoveKeyboard(true);
+                    message.setText("Вы закрыли каталог товаров");
+                }
+                case COMMAND_SHOP -> {
+                    logic.setNamesButtonsAndSetTextNamesOfShop(message, carService);
+                }
+                case "BMW" -> {
+                    logic.setNamesButtonsAndSetTextNamesOfCars(message, carService.getCar("BMW"));
+                }
+                case "Renault" -> {
+                    logic.setNamesButtonsAndSetTextNamesOfCars(message, carService.getCar("Renault"));
+                }
+                case "Lada" -> {
+                    logic.setNamesButtonsAndSetTextNamesOfCars(message, carService.getCar("Lada"));
+                }
+                case COMMAND_HELP -> {
+                    message.setText(HELP);
+                }
+                default -> {
+                    message.setText("Команда не найдена");
+                }
+            }
 
-    /**
-     * Удаляет кнопки.
-     */
-    public ReplyKeyboardRemove removeKeyboard() {
-        ReplyKeyboardRemove keyboardMarkup = new ReplyKeyboardRemove();
-        keyboardMarkup.setRemoveKeyboard(true);
-        return keyboardMarkup;
-    }
-
-    /**
-     * Формирует и выводит кнопки.
-     */
-    public ReplyKeyboardMarkup getKeyBoard(String listCarsOrParts){
-        String[] buttons = listCarsOrParts.split(" ");
-        ReplyKeyboardMarkup keyboardMarkup = new ReplyKeyboardMarkup();
-        List<KeyboardRow> keyboardRows = new ArrayList<>();
-        KeyboardRow row = new KeyboardRow();
-        for (String button : buttons) {
-            row.add(button);
+            bot.sendMessage(message);
         }
-        keyboardRows.add(row);
-        keyboardMarkup.setKeyboard(keyboardRows);
-        return keyboardMarkup;
-    }
-
-    /**
-     * Возвращает все названия машин, на которые есть запчасти.
-     */
-    public String getNameCars(){
-        Storage storage = new Storage();
-        List<Car> listCars = storage.getStorage();
-        StringBuilder nameCars = new StringBuilder();
-        for (Car car: listCars) {
-            nameCars.append(car.getName()).append(" ");
-        }
-        return nameCars.toString();
-    }
-
-    /**
-     * Возвращает список имеющихся запчастей на конкретную машину в виде строки.
-     */
-    public String getParts(Car car){
-        return car.getAvailabilityParts();
     }
 }
