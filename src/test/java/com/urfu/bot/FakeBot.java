@@ -1,12 +1,11 @@
-package com.urfu.bot.telegram;
-import com.urfu.bot.Bot;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+package com.urfu.bot;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class FakeBot implements Bot {
     private final List<String> messages = new ArrayList<>();
-    private SendMessage message = new SendMessage();
+    private MessageToUser message = new MessageToUser();
 
     public String getLastMessage() {
         return messages.get(messages.size() - 1);
@@ -14,10 +13,10 @@ public class FakeBot implements Bot {
 
     public List<String> getMessages() { return messages; }
 
-    public SendMessage getMessage() { return message; }
+    public MessageToUser getMessage() { return message; }
 
     @Override
-    public void sendMessage(SendMessage message) {
+    public void sendMessage(MessageToUser message) {
         messages.add(message.getText());
         this.message = message;
     }

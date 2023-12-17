@@ -1,17 +1,8 @@
-package com.urfu.bot.telegram;
+package com.urfu.bot;
 
 import com.urfu.commands.Commands;
 import org.junit.Assert;
 import org.junit.Test;
-import org.telegram.telegrambots.meta.api.objects.Chat;
-import org.telegram.telegrambots.meta.api.objects.Message;
-import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardButton;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.urfu.bot.Constants.*;
 
@@ -21,33 +12,15 @@ import static com.urfu.bot.Constants.*;
 public class TestCommands {
 
     /**
-     * Метод создает моки объектов Update и заполняет список messages сообщениями от бота.
-     * @param command команда, вводимая пользователем
-     * @return мок объекта Update
-     */
-    private Update createUpdate(String command) {
-        Update update = new Update();
-        Message message = new Message();
-        Chat chat = new Chat();
-
-        message.setText(command);
-        chat.setId(0L);
-        chat.setFirstName("John");
-        message.setChat(chat);
-        update.setMessage(message);
-
-        return update;
-    }
-
-    /**
      * Тест, проверяющий выполнение команды /start
      */
     @Test
     public void testStart() {
         FakeBot fakeBot = new FakeBot();
         Commands commands = new Commands(fakeBot);
+        MessageFromUser messageFromUser = new MessageFromUser(0L, COMMAND_START, "John");
 
-        commands.onUpdateReceived(createUpdate(COMMAND_START));
+        commands.onUpdateReceived(messageFromUser);
 
         Assert.assertEquals("""
                 Привет, John, Это телеграмм бот магазина  автозапчастей. Доступны следующие команды:
@@ -69,8 +42,9 @@ public class TestCommands {
     public void testHelp(){
         FakeBot fakeBot = new FakeBot();
         Commands commands = new Commands(fakeBot);
+        MessageFromUser messageFromUser = new MessageFromUser(0L, COMMAND_HELP, "John");
 
-        commands.onUpdateReceived(createUpdate(COMMAND_HELP));
+        commands.onUpdateReceived(messageFromUser);
 
         Assert.assertEquals("""
                 Справка о дуступных командах:
@@ -91,19 +65,18 @@ public class TestCommands {
     public void testShop(){
         FakeBot fakeBot = new FakeBot();
         Commands commands = new Commands(fakeBot);
+        MessageFromUser messageFromUser = new MessageFromUser(0L, COMMAND_SHOP, "John");
 
-        commands.onUpdateReceived(createUpdate(COMMAND_SHOP));
+        commands.onUpdateReceived(messageFromUser);
 
         Assert.assertEquals("""
                  В наличии комплектующие для автомобилей:
                  BMW, Renault, Lada""", fakeBot.getLastMessage());
 
-        ReplyKeyboardMarkup keyboardMarkup = (ReplyKeyboardMarkup)fakeBot.getMessage().getReplyMarkup();
-        List<KeyboardRow> keyboardRows = keyboardMarkup.getKeyboard();
+        String keyboardRows = fakeBot.getMessage().getButtonNamesSeparatedBySpaces();
 
         Assert.assertFalse(keyboardRows.isEmpty());
 
-        String buttons = keyboardRows.get(0).stream().map(KeyboardButton::getText).collect(Collectors.joining(" "));
-        Assert.assertEquals("BMW Renault Lada", buttons);
+        Assert.assertEquals("BMW Renault Lada ", keyboardRows);
     }
 }
