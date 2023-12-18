@@ -10,21 +10,21 @@ import java.util.stream.Collectors;
  * Сервис машины
  */
 public class CarService {
-
     Storage storage = new Storage();
     /**
-     * возвращает список машин
+     * Возвращает список машин
      */
     public List<Car> getCars() {
         return storage.getStorage();
     }
 
     /**
-     * Возвращает имена машин через запятую(нужно для объявления имеющихся в магазине машин)
+     * Возвращает строку, содержащую имена машин через заданный символ
+     * @param symbol символ, который нужно вставить между названиями машин
      */
-    public String getNamesCars() {
+    public String getNamesCars(String symbol) {
         List<Car> cars = getCars();
-        return cars.stream().map(Car::getName).collect(Collectors.joining(", "));
+        return cars.stream().map(Car::getName).collect(Collectors.joining(symbol));
     }
 
     /**

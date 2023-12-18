@@ -1,7 +1,7 @@
 package com.urfu.storage;
 
 import com.urfu.domain.car.Car;
-import com.urfu.domain.spareParts.SpareParts;
+import com.urfu.domain.sparePart.SparePart;
 
 import java.util.List;
 
@@ -10,14 +10,12 @@ import java.util.List;
  */
 public class Storage {
     private final List<Car> listCars = List.of(
-            new Car("BMW", new SpareParts("колёса"), new SpareParts("фары"), new SpareParts("дворники")),
-            new Car("Renault", new SpareParts("колёса"), new SpareParts("фары"), new SpareParts("дворники")),
-            new Car("Lada", new SpareParts("колёса"), new SpareParts("фары"), new SpareParts("дворники")));
+            new Car("BMW", List.of(new SparePart("колёса"), new SparePart("фары"), new SparePart("дворники"))),
+            new Car("Renault", List.of(new SparePart("колёса"), new SparePart("фары"), new SparePart("дворники"))),
+            new Car("Lada", List.of(new SparePart("колёса"), new SparePart("фары"), new SparePart("дворники"))));
 
     /**
      * Возвращает список машин.
-     *
-     * @return listCars
      */
     public List<Car> getStorage() {
         return listCars;

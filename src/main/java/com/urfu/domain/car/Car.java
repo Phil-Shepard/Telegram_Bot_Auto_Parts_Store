@@ -1,23 +1,21 @@
 package com.urfu.domain.car;
 
-import com.urfu.domain.spareParts.SpareParts;
+import com.urfu.domain.sparePart.SparePart;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Описывает сущность машины
  */
-
 public class Car {
-
     private final String name;
-    private final SpareParts wheels;
-    private final SpareParts headlights;
-    private final SpareParts wipers;
+    private final List<SparePart> spareParts = new ArrayList<>();
 
-    public Car(String name, SpareParts wheels, SpareParts headlights, SpareParts wipers){
+    public Car(String name, List<SparePart> spareParts){
         this.name = name;
-        this.wheels = wheels;
-        this.headlights = headlights;
-        this.wipers = wipers;
+        this.spareParts.addAll(spareParts);
     }
 
     /**
@@ -31,15 +29,6 @@ public class Car {
      * Возвращает список запчастей, которые имеются на машину в виде строки
      */
     public String getAvailabilityParts(){
-        return getAvailabilitySparePart(wheels) + " " + getAvailabilitySparePart(headlights) + " " + getAvailabilitySparePart(wipers);
-    }
-
-    /**
-     * Возвращает название запчасти, если она есть в наличии, в качестве аргумента принимает саму запчасть
-     */
-    public String getAvailabilitySparePart(SpareParts sparePart){
-        if (sparePart.getName() == null)
-            return "";
-        return sparePart.getName();
+        return spareParts.stream().map(SparePart::getName).collect(Collectors.joining(" "));
     }
 }

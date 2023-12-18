@@ -1,9 +1,9 @@
 package com.urfu.bot;
 
 /**
- * Class for working with information for User
+ * Сообщение от бота
  */
-public class MessageToUser {
+public class MessageToUser implements Cloneable {
     private long chatId;
     private String text = null;
     private Boolean replyMarkup = false;
@@ -88,5 +88,19 @@ public class MessageToUser {
      */
     public void setButtonNamesSeparatedBySpaces(String buttonNamesSeparatedBySpaces) {
         this.buttonNamesSeparatedBySpaces = buttonNamesSeparatedBySpaces;
+    }
+
+    @Override
+    public MessageToUser clone() {
+        try {
+            MessageToUser clone = (MessageToUser) super.clone();
+            clone.chatId = this.chatId;
+            clone.text = this.text;
+            clone.replyMarkup = this.replyMarkup;
+            clone.buttonNamesSeparatedBySpaces = this.buttonNamesSeparatedBySpaces;
+            return clone;
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError();
+        }
     }
 }

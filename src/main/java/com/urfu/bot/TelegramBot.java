@@ -1,6 +1,5 @@
 package com.urfu.bot;
 
-import com.urfu.commands.Commands;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.commands.SetMyCommands;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -20,7 +19,7 @@ import java.util.List;
  */
 public class TelegramBot extends TelegramLongPollingBot implements Bot {
 
-    private final Commands commands = new Commands(this);
+    private final BotLogic botLogic = new BotLogic(this);
     private final BotConfig config = new BotConfig();
 
     public TelegramBot() throws TelegramApiException {
@@ -69,7 +68,7 @@ public class TelegramBot extends TelegramLongPollingBot implements Bot {
                 update.getMessage().getChat().getFirstName()
         );
 
-        commands.onUpdateReceived(message);
+        botLogic.onUpdateReceived(message);
     }
 
     /**

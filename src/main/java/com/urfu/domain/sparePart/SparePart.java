@@ -1,11 +1,11 @@
-package com.urfu.domain.spareParts;
+package com.urfu.domain.sparePart;
 
 /**
- * Интерфейс запчастей
+ * Сущность запчасти
  */
-public class SpareParts {
+public class SparePart {
     private final String name;
-    public SpareParts(String name){
+    public SparePart(String name){
         this.name = name;
     }
 

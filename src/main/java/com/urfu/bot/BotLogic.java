@@ -1,22 +1,20 @@
-package com.urfu.commands;
+package com.urfu.bot;
 
-import com.urfu.bot.Bot;
-import com.urfu.bot.MessageFromUser;
-import com.urfu.bot.MessageToUser;
-import com.urfu.logic.Logic;
 import com.urfu.services.CarService;
+import com.urfu.services.SparePartService;
 
 import static com.urfu.bot.Constants.*;
 
 /**
- * Описывает команды
+ * Логика бота
  */
-public class Commands {
-    private final Logic logic = new Logic();
+public class BotLogic {
+    private final BotCommands botCommands = new BotCommands();
     private final CarService carService = new CarService();
+    private final SparePartService sparePartService = new SparePartService();
     private final Bot bot;
 
-    public Commands(Bot bot) {
+    public BotLogic(Bot bot) {
         this.bot = bot;
     }
 
@@ -29,36 +27,35 @@ public class Commands {
             long chatId = messageFromUser.getChatId();
             MessageToUser message = new MessageToUser();
             message.setChatId(chatId);
-
+            MessageToUser resultMessage;
             switch (messageText) {
                 case COMMAND_START -> {
-                    logic.startCommandReceived(message, messageFromUser.getUserName());
+                    resultMessage = botCommands.startCommandReceived(message, messageFromUser.getUserName());
                 }
                 case COMMAND_EXIT -> {
-                    message.setRemoveKeyboard(true);
-                    message.setText("Вы закрыли каталог товаров");
+                    resultMessage = botCommands.deleteButtons(message);
                 }
                 case COMMAND_SHOP -> {
-                    logic.setNamesButtonsAndSetTextNamesOfShop(message, carService);
+                    resultMessage = botCommands.setNamesButtonsAndSetTextNamesOfShop(message, carService);
                 }
                 case "BMW" -> {
-                    logic.setNamesButtonsAndSetTextNamesOfCars(message, carService.getCar("BMW"));
+                    resultMessage = botCommands.setNamesButtonsAndSetTextNamesOfCars(message, carService.getCar("BMW"), sparePartService);
                 }
                 case "Renault" -> {
-                    logic.setNamesButtonsAndSetTextNamesOfCars(message, carService.getCar("Renault"));
+                    resultMessage = botCommands.setNamesButtonsAndSetTextNamesOfCars(message, carService.getCar("Renault"), sparePartService);
                 }
                 case "Lada" -> {
-                    logic.setNamesButtonsAndSetTextNamesOfCars(message, carService.getCar("Lada"));
+                    resultMessage = botCommands.setNamesButtonsAndSetTextNamesOfCars(message, carService.getCar("Lada"), sparePartService);
                 }
                 case COMMAND_HELP -> {
-                    message.setText(HELP);
+                    resultMessage = botCommands.setTextHelp(message);
                 }
                 default -> {
-                    message.setText("Команда не найдена");
+                    resultMessage = botCommands.setTextCommandNotFound(message);
                 }
             }
 
-            bot.sendMessage(message);
+            bot.sendMessage(resultMessage);
         }
     }
 }

@@ -1,6 +1,5 @@
 package com.urfu.bot;
 
-import com.urfu.commands.Commands;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -9,7 +8,7 @@ import static com.urfu.bot.Constants.*;
 /**
  * Класс тестов для проверки работы команд для бота
  */
-public class TestCommands {
+public class TestBotLogic {
 
     /**
      * Тест, проверяющий выполнение команды /start
@@ -17,10 +16,10 @@ public class TestCommands {
     @Test
     public void testStart() {
         FakeBot fakeBot = new FakeBot();
-        Commands commands = new Commands(fakeBot);
+        BotLogic botLogic = new BotLogic(fakeBot);
         MessageFromUser messageFromUser = new MessageFromUser(0L, COMMAND_START, "John");
 
-        commands.onUpdateReceived(messageFromUser);
+        botLogic.onUpdateReceived(messageFromUser);
 
         Assert.assertEquals("""
                 Привет, John, Это телеграмм бот магазина  автозапчастей. Доступны следующие команды:
@@ -41,10 +40,10 @@ public class TestCommands {
     @Test
     public void testHelp(){
         FakeBot fakeBot = new FakeBot();
-        Commands commands = new Commands(fakeBot);
+        BotLogic botLogic = new BotLogic(fakeBot);
         MessageFromUser messageFromUser = new MessageFromUser(0L, COMMAND_HELP, "John");
 
-        commands.onUpdateReceived(messageFromUser);
+        botLogic.onUpdateReceived(messageFromUser);
 
         Assert.assertEquals("""
                 Справка о дуступных командах:
@@ -64,19 +63,37 @@ public class TestCommands {
     @Test
     public void testShop(){
         FakeBot fakeBot = new FakeBot();
-        Commands commands = new Commands(fakeBot);
+        BotLogic botLogic = new BotLogic(fakeBot);
         MessageFromUser messageFromUser = new MessageFromUser(0L, COMMAND_SHOP, "John");
 
-        commands.onUpdateReceived(messageFromUser);
+        botLogic.onUpdateReceived(messageFromUser);
 
         Assert.assertEquals("""
                  В наличии комплектующие для автомобилей:
                  BMW, Renault, Lada""", fakeBot.getLastMessage());
 
+        Assert.assertFalse(fakeBot.getMessage().getReplyMarkup());
+
         String keyboardRows = fakeBot.getMessage().getButtonNamesSeparatedBySpaces();
 
         Assert.assertFalse(keyboardRows.isEmpty());
 
-        Assert.assertEquals("BMW Renault Lada ", keyboardRows);
+        Assert.assertEquals("BMW Renault Lada", keyboardRows);
+    }
+
+    /**
+     * Тест, проверяющий выполнение команды /exit
+     */
+    @Test
+    public void testExit(){
+        FakeBot fakeBot = new FakeBot();
+        BotLogic botLogic = new BotLogic(fakeBot);
+        MessageFromUser messageFromUser = new MessageFromUser(0L, COMMAND_EXIT, "John");
+
+        botLogic.onUpdateReceived(messageFromUser);
+
+        Assert.assertEquals("Вы закрыли каталог товаров", fakeBot.getLastMessage());
+
+        Assert.assertTrue(fakeBot.getMessage().getReplyMarkup());
     }
 }

@@ -1,12 +1,12 @@
 package com.urfu.bot;
 
-/*
-    Class for working with information from User
+/**
+ * Сообщение от пользователя
  */
 public class MessageFromUser {
-    private long chatId;
-    private String message;
-    private String name;
+    private final long chatId;
+    private final String message;
+    private final String name;
 
     MessageFromUser(long chatId, String message, String name) {
         this.chatId = chatId;
