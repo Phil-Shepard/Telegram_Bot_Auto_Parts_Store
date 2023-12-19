@@ -1,6 +1,7 @@
 package com.urfu.bot;
 
 import com.urfu.domain.car.Car;
+import com.urfu.domain.message.MessageToUser;
 import com.urfu.services.CarService;
 import com.urfu.services.SparePartService;
 

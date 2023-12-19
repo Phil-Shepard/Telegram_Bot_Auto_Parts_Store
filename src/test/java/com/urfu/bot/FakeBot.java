@@ -1,5 +1,7 @@
 package com.urfu.bot;
 
+import com.urfu.domain.message.MessageToUser;
+
 import java.util.ArrayList;
 import java.util.List;
 

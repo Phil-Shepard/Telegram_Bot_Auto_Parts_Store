@@ -1,5 +1,8 @@
-package com.urfu.bot;
+package com.urfu.telegram;
 
+import com.urfu.bot.*;
+import com.urfu.domain.message.MessageFromUser;
+import com.urfu.domain.message.MessageToUser;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.commands.SetMyCommands;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;

@@ -1,4 +1,4 @@
-package com.urfu.bot;
+package com.urfu.domain.message;
 
 /**
  * Сообщение от бота

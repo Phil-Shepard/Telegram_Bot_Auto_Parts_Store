@@ -1,5 +1,6 @@
 package com.urfu.bot;
 
+import com.urfu.domain.message.MessageFromUser;
 import org.junit.Assert;
 import org.junit.Test;
 

@@ -1,5 +1,7 @@
 package com.urfu.bot;
 
+import com.urfu.domain.message.MessageToUser;
+
 /**
  * Интерфейс бота
  */

@@ -1,4 +1,4 @@
-package com.urfu.bot;
+package com.urfu.domain.message;
 
 /**
  * Сообщение от пользователя
@@ -8,7 +8,7 @@ public class MessageFromUser {
     private final String message;
     private final String name;
 
-    MessageFromUser(long chatId, String message, String name) {
+    public MessageFromUser(long chatId, String message, String name) {
         this.chatId = chatId;
         this.message = message;
         this.name = name;
