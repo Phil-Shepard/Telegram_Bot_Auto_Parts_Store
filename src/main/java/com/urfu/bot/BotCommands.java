@@ -1,9 +1,14 @@
 package com.urfu.bot;
 
+import com.urfu.domain.basket.Basket;
 import com.urfu.domain.car.Car;
 import com.urfu.domain.message.MessageToUser;
+import com.urfu.domain.sparePart.SparePart;
 import com.urfu.services.CarService;
 import com.urfu.services.SparePartService;
+
+import java.util.ArrayList;
+import java.util.Map;
 
 import static com.urfu.bot.Constants.*;
 
@@ -73,6 +78,48 @@ public class BotCommands {
     public MessageToUser setTextCommandNotFound(MessageToUser messageToUser){
         MessageToUser resultMessageToUser = messageToUser.clone();
         resultMessageToUser.setText("Команда не найдена");
+        return resultMessageToUser;
+    }
+
+    /**
+     * Добавляет выбранную запчасть в корзину.
+     * @param carName машина, sparePart запчасть
+     * @return заполненную корзину
+     */
+    public MessageToUser addSparePartInBasket(MessageToUser messageToUser, Basket basket, String carName, SparePart sparePart) {
+        MessageToUser resultMessageToUser = messageToUser.clone();
+        ArrayList<SparePart> partsList = basket.contentsBasket.getOrDefault(carName, new ArrayList<>());
+        partsList.add(sparePart);
+        basket.contentsBasket.put(carName, partsList);
+        resultMessageToUser.setText("Товар " + sparePart.getName() + " успешно добавлен в корзину.");
+        return resultMessageToUser;
+    }
+
+    /**
+     * Возвращает содержимое корзины
+     */
+    public MessageToUser getBasket(MessageToUser messageToUser, Basket basket) {
+        MessageToUser resultMessageToUser = messageToUser.clone();
+        StringBuilder basketContents = new StringBuilder("Содержимое корзины:\n");
+
+        for (Map.Entry<String, ArrayList<SparePart>> entry : basket.contentsBasket.entrySet()) {
+            String car = entry.getKey();
+            ArrayList<SparePart> spareParts = entry.getValue();
+
+            basketContents.append("Машина: ").append(car).append("\n");
+            basketContents.append("Запчасти: ");
+            if (spareParts.isEmpty()) {
+                basketContents.append("Отсутствуют");
+            } else {
+                for (SparePart part : spareParts) {
+                    basketContents.append(part.getName()).append(", ");
+                }
+                basketContents.delete(basketContents.length() - 2, basketContents.length()); // Удаляем лишнюю запятую
+            }
+            basketContents.append("\n\n");
+        }
+
+        resultMessageToUser.setText(basketContents.toString());
         return resultMessageToUser;
     }
 }

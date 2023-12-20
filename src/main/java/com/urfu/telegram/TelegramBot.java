@@ -1,6 +1,7 @@
 package com.urfu.telegram;
 
 import com.urfu.bot.*;
+import com.urfu.domain.basket.Basket;
 import com.urfu.domain.message.MessageFromUser;
 import com.urfu.domain.message.MessageToUser;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -22,6 +23,7 @@ import java.util.List;
  */
 public class TelegramBot extends TelegramLongPollingBot implements Bot {
 
+    private final Basket basket = new Basket();
     private final BotLogic botLogic = new BotLogic(this);
     private final BotConfig config = new BotConfig();
 
@@ -71,7 +73,7 @@ public class TelegramBot extends TelegramLongPollingBot implements Bot {
                 update.getMessage().getChat().getFirstName()
         );
 
-        botLogic.onUpdateReceived(message);
+        botLogic.onUpdateReceived(message, basket);
     }
 
     /**
