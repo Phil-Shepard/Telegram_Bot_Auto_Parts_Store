@@ -2,6 +2,7 @@ package com.urfu.domain.basket;
 
 import com.urfu.domain.message.MessageToUser;
 import com.urfu.domain.sparePart.SparePart;
+import com.urfu.services.HistoryService;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -117,26 +118,32 @@ public class Basket {
      * Создаёт отчёт и вносит его в историю заказов, очищая корзину
      * @return Сообщение об успешном запасе, также возвращает содержимое заказа
      */
-    public MessageToUser makeOrder(MessageToUser messageToUser){
+    public MessageToUser makeOrder(MessageToUser messageToUser, HistoryService history){
         MessageToUser resultMessageToUser = messageToUser.clone();
         if (!contentsBasket.isEmpty()){
             resultMessageToUser.setText("Успешно заказано:" + "\n" + getBasket(messageToUser)
                     .getText().replace("Содержимое корзины:\n", ""));
+            history.getHistoryList().add(resultMessageToUser.getText()
+                    .replace("Успешно заказано:", ""));
             return resultMessageToUser;
         }
         resultMessageToUser.setText("Нечего заказывать, корзина пустая");
         return resultMessageToUser;
     }
 
-//    public String getHistory(HistoryServiceImpl historyService){
-//        StringBuilder result = new StringBuilder();
-//        result.append("История ваших заказов:\n");
-//        for (HashMap<String, String> order : historyService.historyList) {
-//            for (Map.Entry<String, String> entry : order.entrySet()) {
-//                result.append(entry.getKey()).append(":\n");
-//                result.append(entry.getValue().replaceAll("(\\d+\\))", "$1"));
-//            }
-//        }
-//        return result.toString();
-//    }
+    public MessageToUser getHistory(MessageToUser messageToUser, HistoryService historyService){
+        MessageToUser resultMessageToUser = messageToUser.clone();
+        StringBuilder answer;
+        if (historyService.getHistoryList().isEmpty()) {
+            resultMessageToUser.setText("История заказов пуста");
+            return resultMessageToUser;
+        } else {
+            answer = new StringBuilder("История заказов:\n");
+            for (String order : historyService.getHistoryList()) {
+                answer.append(order);
+            }
+        }
+        resultMessageToUser.setText(answer.toString().replaceAll("\n\n", "\n"));
+        return resultMessageToUser;
+    }
 }

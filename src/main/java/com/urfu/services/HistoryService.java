@@ -1,14 +1,12 @@
 package com.urfu.services;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import com.urfu.domain.sparePart.SparePart;
 
 public class HistoryService {
-    public ArrayList<HashMap<String, ArrayList<SparePart>>> historyList = new ArrayList<HashMap<String,ArrayList<SparePart>>>();
+    private final ArrayList<String> historyList = new ArrayList<String>();
 
 
-    public ArrayList<HashMap<String,ArrayList<SparePart>>> getHistoryList() {
+    public ArrayList<String> getHistoryList() {
         return historyList;
     }
 }

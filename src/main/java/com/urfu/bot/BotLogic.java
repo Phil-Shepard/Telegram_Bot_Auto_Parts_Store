@@ -62,8 +62,11 @@ public class BotLogic {
                     resultMessage = basket.deleteAllPartsFromBasket(message);
                 }
                 case COMMAND_ORDER -> {
-                    resultMessage = basket.makeOrder(message);
+                    resultMessage = basket.makeOrder(message,history);
                     basket.deleteAllPartsFromBasket(message);
+                }
+                case COMMAND_HISTORY -> {
+                    resultMessage = basket.getHistory(message, history);
                 }
                 case "BMW" -> {
                     nameCar = "BMW";
