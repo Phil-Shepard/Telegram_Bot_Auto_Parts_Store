@@ -31,7 +31,6 @@ public class MessageToUser {
 
     /**
      * Получение id чата
-     *
      * @return Id текущего чата
      */
     public long getChatId() {
@@ -40,7 +39,6 @@ public class MessageToUser {
 
     /**
      * Получение флага удаления кнопок
-     *
      * @return Флаг удаления кнопок
      */
     public Boolean getRemoveMarkup() {
@@ -50,7 +48,6 @@ public class MessageToUser {
 
     /**
      * Получение текста сообщения
-     *
      * @return Текст сообщения
      */
     public String getText() {
@@ -59,7 +56,6 @@ public class MessageToUser {
 
     /**
      * Возвращает названия кнопок, которые нужно добавить пользователю
-     *
      * @return Название кнопок с пробелами
      */
     public String getButtonNamesSeparatedBySpaces() {

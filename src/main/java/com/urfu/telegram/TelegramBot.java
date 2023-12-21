@@ -80,7 +80,6 @@ public class TelegramBot extends TelegramLongPollingBot implements Bot {
 
     /**
      * Мапит общий тип сообщения к сообщению ТГ бота
-     *
      * @param messageToUser общее сообщение
      * @return Сообщение для ТГ бота
      */

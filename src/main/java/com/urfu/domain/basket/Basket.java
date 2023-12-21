@@ -2,17 +2,22 @@ package com.urfu.domain.basket;
 
 import com.urfu.domain.message.MessageToUser;
 import com.urfu.domain.sparePart.SparePart;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+/**
+ * Класс корзины, в которой у нас хранятся названия машин и выбранные
+ * к ним запчасти в виде словаря.
+ * Также в классе находятся все методы взаимодействия с корзиной.
+ */
 public class Basket {
     public HashMap<String, ArrayList<SparePart>> contentsBasket = new HashMap<>();
 
     /**
-     * Добавляет выбранную запчасть в корзину.
+     * Добавляет выбранную запчасть в корзину и возвращает сообщение
+     * об успешном добавлении
      */
     public MessageToUser addSparePartInBasket(long chatId, String carName, SparePart sparePart) {
         String answer;
@@ -28,7 +33,7 @@ public class Basket {
     }
 
     /**
-     * Возвращает содержимое корзины
+     * Возвращает содержимое корзины в виде сообщения
      */
     public MessageToUser getBasket(long chatId) {
         String answer;
@@ -72,6 +77,10 @@ public class Basket {
         return new MessageToUser(chatId, answer);
     }
 
+    /**
+     * Удаляет выбранную запчасть из корзины и возвращает сообщение
+     * об успешном удалении
+     */
     public MessageToUser deleteSparePartsFromBasket(long chatId, String input) {
         String answer;
         String[] parts = input.split(":");
