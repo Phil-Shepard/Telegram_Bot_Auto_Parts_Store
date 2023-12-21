@@ -2,6 +2,7 @@ package com.urfu.services;
 
 import com.urfu.domain.car.Car;
 import com.urfu.storage.Storage;
+
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -21,6 +22,7 @@ public class CarService {
 
     /**
      * Возвращает строку, содержащую имена машин через заданный символ
+     *
      * @param symbol символ, который нужно вставить между названиями машин
      */
     public String getNamesCars(String symbol) {
