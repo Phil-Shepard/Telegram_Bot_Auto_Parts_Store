@@ -9,6 +9,12 @@ public class MessageToUser {
     private final Boolean removeMarkup;
     private final String buttonNamesSeparatedBySpaces;
 
+    public MessageToUser(long chatId, String text) {
+        this.chatId = chatId;
+        this.text = text;
+        this.removeMarkup = false;
+        this.buttonNamesSeparatedBySpaces = null;
+    }
     public MessageToUser(long chatId, String text, Boolean removeMarkup, String buttonNamesSeparatedBySpaces) {
         this.chatId = chatId;
         this.text = text;
