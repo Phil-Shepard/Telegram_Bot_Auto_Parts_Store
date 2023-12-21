@@ -17,7 +17,7 @@ public class Storage {
     /**
      * Возвращает список машин.
      */
-    public List<Car> getStorage() {
+    public List<Car> getListCars() {
         return listCars;
     }
 }

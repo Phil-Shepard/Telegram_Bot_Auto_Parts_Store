@@ -1,6 +1,7 @@
 package com.urfu.services;
 
 import com.urfu.domain.car.Car;
+import com.urfu.storage.Storage;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -25,8 +26,9 @@ public class TestCarService {
     @Test
     public void testGetCar() {
         CarService carService = new CarService();
-        List<Car> cars = carService.getCars();
-        List<String> carNames = carService.getCars().stream().map(Car::getName).toList();
+        Storage storage = new Storage();
+        List<Car> cars = storage.getListCars();
+        List<String> carNames = storage.getListCars().stream().map(Car::getName).toList();
         for (int i = 0; i < cars.size(); i++) {
             Assert.assertEquals(cars.get(i), carService.getCar(carNames.get(i)));
         }

@@ -3,7 +3,6 @@ package com.urfu.bot;
 import com.urfu.domain.message.MessageFromUser;
 import com.urfu.domain.message.MessageToUser;
 import com.urfu.services.CarService;
-import com.urfu.services.SparePartService;
 
 import static com.urfu.bot.Constants.*;
 
@@ -11,9 +10,8 @@ import static com.urfu.bot.Constants.*;
  * Логика бота
  */
 public class BotLogic {
-    private final BotCommands botCommands = new BotCommands();
+    private final BotMessageCreator botMessageCreator = new BotMessageCreator();
     private final CarService carService = new CarService();
-    private final SparePartService sparePartService = new SparePartService();
     private final Bot bot;
 
     public BotLogic(Bot bot) {
@@ -27,33 +25,31 @@ public class BotLogic {
         if (messageFromUser.getMessage() != null && !messageFromUser.getMessage().isEmpty()) {
             String messageText = messageFromUser.getMessage();
             long chatId = messageFromUser.getChatId();
-            MessageToUser message = new MessageToUser();
-            message.setChatId(chatId);
             MessageToUser resultMessage;
             switch (messageText) {
                 case COMMAND_START -> {
-                    resultMessage = botCommands.startCommandReceived(message, messageFromUser.getUserName());
+                    resultMessage = botMessageCreator.createMessageStartWorkBot(chatId, messageFromUser.getUserName());
                 }
                 case COMMAND_EXIT -> {
-                    resultMessage = botCommands.deleteButtons(message);
+                    resultMessage = botMessageCreator.createMessageDeleteButtons(chatId);
                 }
                 case COMMAND_SHOP -> {
-                    resultMessage = botCommands.setNamesButtonsAndSetTextNamesOfShop(message, carService);
+                    resultMessage = botMessageCreator.createMessageNamesButtonsAndTextNamesOfCars(chatId, carService);
                 }
                 case "BMW" -> {
-                    resultMessage = botCommands.setNamesButtonsAndSetTextNamesOfCars(message, carService.getCar("BMW"), sparePartService);
+                    resultMessage = botMessageCreator.createMessageNamesButtonsAndTextNamesOfSpareParts(chatId, carService.getCar("BMW"));
                 }
                 case "Renault" -> {
-                    resultMessage = botCommands.setNamesButtonsAndSetTextNamesOfCars(message, carService.getCar("Renault"), sparePartService);
+                    resultMessage = botMessageCreator.createMessageNamesButtonsAndTextNamesOfSpareParts(chatId, carService.getCar("Renault"));
                 }
                 case "Lada" -> {
-                    resultMessage = botCommands.setNamesButtonsAndSetTextNamesOfCars(message, carService.getCar("Lada"), sparePartService);
+                    resultMessage = botMessageCreator.createMessageNamesButtonsAndTextNamesOfSpareParts(chatId, carService.getCar("Lada"));
                 }
                 case COMMAND_HELP -> {
-                    resultMessage = botCommands.setTextHelp(message);
+                    resultMessage = botMessageCreator.createMessageAccessButtons(chatId);
                 }
                 default -> {
-                    resultMessage = botCommands.setTextCommandNotFound(message);
+                    resultMessage = botMessageCreator.createMessageNotFoundCommand(chatId);
                 }
             }
 

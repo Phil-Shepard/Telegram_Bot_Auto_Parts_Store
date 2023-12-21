@@ -3,6 +3,7 @@ package com.urfu.bot;
 import com.urfu.domain.car.Car;
 import com.urfu.domain.message.MessageFromUser;
 import com.urfu.services.CarService;
+import com.urfu.storage.Storage;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -25,7 +26,8 @@ public class TestBotLogic {
         botLogic.onUpdateReceived(messageFromUser);
 
         Assert.assertEquals("""
-                Привет, John, это телеграмм бот магазина автозапчастей. Доступны следующие команды:
+                Привет, John, это телеграм бот магазина автозапчастей.
+                Доступны следующие команды:
                 /shop – Перейти в каталог запчастей.
                 /basket - Вывести содержимое корзины.
                 /order - Оформить заказ.
@@ -73,7 +75,7 @@ public class TestBotLogic {
                 В наличии комплектующие для автомобилей:
                 BMW, Renault, Lada""", fakeBot.getLastMessage());
 
-        Assert.assertFalse(fakeBot.getMessage().getReplyMarkup());
+        Assert.assertFalse(fakeBot.getMessage().getRemoveMarkup());
 
         String keyboardRows = fakeBot.getMessage().getButtonNamesSeparatedBySpaces();
 
@@ -95,7 +97,7 @@ public class TestBotLogic {
 
         Assert.assertEquals("Вы закрыли каталог товаров", fakeBot.getLastMessage());
 
-        Assert.assertTrue(fakeBot.getMessage().getReplyMarkup());
+        Assert.assertTrue(fakeBot.getMessage().getRemoveMarkup());
     }
 
     /**
@@ -105,14 +107,15 @@ public class TestBotLogic {
     public void testCommandCars() {
         FakeBot fakeBot = new FakeBot();
         BotLogic botLogic = new BotLogic(fakeBot);
+        Storage storage = new Storage();
         CarService carService = new CarService();
         MessageFromUser messageFromUser;
         String keyboardRows;
 
-        for (String carName : carService.getCars().stream().map(Car::getName).toList()) {
+        for (String carName : storage.getListCars().stream().map(Car::getName).toList()) {
             messageFromUser = new MessageFromUser(0L, carName, "John");
             botLogic.onUpdateReceived(messageFromUser);
-            Assert.assertEquals(carService.getCar(messageFromUser.getUserName()).getAvailabilityParts(), fakeBot.getLastMessage());
+            Assert.assertEquals(carService.getCar(messageFromUser.getUserName()).getAvailabilityParts(", "), fakeBot.getLastMessage());
             keyboardRows = fakeBot.getMessage().getButtonNamesSeparatedBySpaces();
             Assert.assertFalse(keyboardRows.isEmpty());
         }

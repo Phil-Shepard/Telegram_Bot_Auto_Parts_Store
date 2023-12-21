@@ -25,7 +25,7 @@ public class TelegramBot extends TelegramLongPollingBot implements Bot {
     private final BotLogic botLogic = new BotLogic(this);
     private final BotConfig config = new BotConfig();
 
-    public TelegramBot() throws TelegramApiException {
+    public TelegramBot() {
         List<BotCommand> listOfCommands = new ArrayList<>();
         listOfCommands.add(new BotCommand("/start", "Это телеграмм бот магазина автозапчастей."));
         listOfCommands.add(new BotCommand("/shop", "Перейти в каталог запчастей"));
@@ -38,9 +38,9 @@ public class TelegramBot extends TelegramLongPollingBot implements Bot {
         listOfCommands.add(new BotCommand("/help", "Справка"));
         try {
             this.execute(new SetMyCommands(listOfCommands, new BotCommandScopeDefault(), null));
-        }
-        catch (TelegramApiException e){
-            throw new TelegramApiException(e.getMessage());
+        } catch (TelegramApiException e) {
+            throw new RuntimeException("Не удалось создать кнопки. "
+                    + e.getMessage(), e);
         }
     }
 
@@ -49,7 +49,8 @@ public class TelegramBot extends TelegramLongPollingBot implements Bot {
         try {
             execute(convertMessageToUserToSendMessage(messageToUser));
         } catch (TelegramApiException e) {
-            System.out.println(e);
+            throw new RuntimeException("Не удалось отправить сообщение. "
+                    + e.getMessage(), e);
         }
     }
 
@@ -84,7 +85,7 @@ public class TelegramBot extends TelegramLongPollingBot implements Bot {
         SendMessage sendMessage = new SendMessage();
         sendMessage.setChatId(messageToUser.getChatId());
 
-        if (messageToUser.getReplyMarkup()) sendMessage.setReplyMarkup(removeKeyboard());
+        if (messageToUser.getRemoveMarkup()) sendMessage.setReplyMarkup(removeKeyboard());
         if (messageToUser.getText() != null) sendMessage.setText(messageToUser.getText());
         if (messageToUser.getButtonNamesSeparatedBySpaces() != null)
             sendMessage.setReplyMarkup(getKeyBoard(messageToUser.getButtonNamesSeparatedBySpaces()));

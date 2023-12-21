@@ -9,9 +9,8 @@ public class Constants {
     public static final String COMMAND_SHOP = "/shop";
     public static final String COMMAND_HELP = "/help";
     public static final String HELP = """
-            Справка о дуступных командах:
+            Справка о доступных командах:
             /shop
-            /add
             /basket
             /order
             /history
@@ -19,14 +18,13 @@ public class Constants {
             /exit
             /help""";
     public static final String TEXT_START = """
-             Доступны следующие команды:
+            Доступны следующие команды:
             /shop – Перейти в каталог запчастей.
-            /add - добавить в корзину выбранную запчасть.
-            /basket - вывести содержимое корзины.
-            /order - оформить заказ
-            /history - вывести историю заказов.
-            /delete - удалить из корзины выбранные комплектующие.
-            /exit - выйти из каталога запчастей.
+            /basket - Вывести содержимое корзины.
+            /order - Оформить заказ.
+            /history - Вывести историю заказов.
+            /delete - Удалить все содержимое корзины.
+            /exit - Выйти из каталога запчастей.
             /help - Справка.
             """;
 }

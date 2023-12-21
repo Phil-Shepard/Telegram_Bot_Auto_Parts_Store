@@ -3,19 +3,24 @@ package com.urfu.domain.message;
 /**
  * Сообщение от бота
  */
-public class MessageToUser implements Cloneable {
-    private long chatId;
-    private String text = null;
-    private Boolean replyMarkup = false;
-    private String buttonNamesSeparatedBySpaces = null;
+public class MessageToUser {
+    private final long chatId;
+    private final String text;
+    private final Boolean removeMarkup;
+    private final String buttonNamesSeparatedBySpaces;
 
-    /**
-     * Установка id чата
-     *
-     * @param chatId Id текущего чата
-     */
-    public void setChatId(long chatId) {
+    public MessageToUser(long chatId, String text, Boolean removeMarkup, String buttonNamesSeparatedBySpaces) {
         this.chatId = chatId;
+        this.text = text;
+        this.removeMarkup = removeMarkup;
+        this.buttonNamesSeparatedBySpaces = buttonNamesSeparatedBySpaces;
+    }
+
+    public MessageToUser() {
+        this.chatId = 0;
+        this.text = null;
+        this.removeMarkup = null;
+        this.buttonNamesSeparatedBySpaces = null;
     }
 
     /**
@@ -28,25 +33,12 @@ public class MessageToUser implements Cloneable {
     }
 
     /**
-     * Установление параметра для удаления кнопок
-     *
-     * @param flagRemoved Флаг удаления кнопок
-     */
-    public void setRemoveKeyboard(Boolean flagRemoved) {
-        if (flagRemoved == null) {
-            throw new NullPointerException("flagRemoved is marked non-null but is null");
-        } else {
-            this.replyMarkup = flagRemoved;
-        }
-    }
-
-    /**
      * Получение флага удаления кнопок
      *
      * @return Флаг удаления кнопок
      */
-    public Boolean getReplyMarkup() {
-        return replyMarkup;
+    public Boolean getRemoveMarkup() {
+        return removeMarkup;
     }
 
 
@@ -60,47 +52,11 @@ public class MessageToUser implements Cloneable {
     }
 
     /**
-     * Добавление текста в сообщение
-     *
-     * @param text Текст сообщения
-     */
-    public void setText(String text) {
-        if (text == null) {
-            throw new NullPointerException("text is marked non-null but is null");
-        } else {
-            this.text = text;
-        }
-    }
-
-    /**
      * Возвращает названия кнопок, которые нужно добавить пользователю
      *
      * @return Название кнопок с пробелами
      */
     public String getButtonNamesSeparatedBySpaces() {
         return buttonNamesSeparatedBySpaces;
-    }
-
-    /**
-     * Устанавливает названия кнопок, которые нужно добавить пользователю
-     *
-     * @param buttonNamesSeparatedBySpaces Название кнопок с пробелами
-     */
-    public void setButtonNamesSeparatedBySpaces(String buttonNamesSeparatedBySpaces) {
-        this.buttonNamesSeparatedBySpaces = buttonNamesSeparatedBySpaces;
-    }
-
-    @Override
-    public MessageToUser clone() {
-        try {
-            MessageToUser clone = (MessageToUser) super.clone();
-            clone.chatId = this.chatId;
-            clone.text = this.text;
-            clone.replyMarkup = this.replyMarkup;
-            clone.buttonNamesSeparatedBySpaces = this.buttonNamesSeparatedBySpaces;
-            return clone;
-        } catch (CloneNotSupportedException e) {
-            throw new AssertionError();
-        }
     }
 }
