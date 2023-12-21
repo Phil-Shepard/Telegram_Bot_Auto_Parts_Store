@@ -9,7 +9,7 @@ import java.util.HashMap;
  * Также в классе находятся все методы взаимодействия с корзиной.
  */
 public class Basket {
-    private HashMap<String, ArrayList<SparePart>> contentsBasket = new HashMap<>();
+    private final HashMap<String, ArrayList<SparePart>> contentsBasket = new HashMap<>();
 
     /**
      * Добавляет выбранную запчасть в корзину
@@ -27,25 +27,6 @@ public class Basket {
         return contentsBasket;
     }
 
-    /**
-     * Удаляет выбранную запчасть из корзины
-     */
-    public void deleteSparePartsFromBasket(String input) {
-        String[] parts = input.split(":");
-        if (parts.length != 2) {
-            return;
-        }
-
-        String carName = parts[0].trim();
-        String partName = parts[1].trim();
-
-        if (contentsBasket.containsKey(carName)) {
-            ArrayList<SparePart> partsList = contentsBasket.get(carName);
-
-            partsList.removeIf(part -> part.getName().equalsIgnoreCase(partName));
-            contentsBasket.put(carName, partsList);
-        }
-    }
 
     /**
      * Полностью очищает корзину
