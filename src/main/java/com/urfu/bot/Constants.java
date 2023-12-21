@@ -9,7 +9,6 @@ public class Constants {
     public static final String COMMAND_SHOP = "/shop";
     public static final String COMMAND_HELP = "/help";
     public static final String COMMAND_BASKET = "/basket";
-    public static final String COMMAND_ADD = "/add";
     public static final String COMMAND_ORDER = "/order";
     public static final String COMMAND_HISTORY = "/history";
     public static final String COMMAND_DELETE = "/delete";
@@ -17,7 +16,7 @@ public class Constants {
     public static final String COMMAND_WHIPERS = "дворники";
     public static final String COMMAND_HEADLIGHTS = "фары";
     public static final String HELP = """
-            Справка о дуступных командах:
+            Справка о доступных командах:
             /shop
             /add
             /basket
@@ -33,7 +32,7 @@ public class Constants {
             /basket - вывести содержимое корзины.
             /order - оформить заказ
             /history - вывести историю заказов.
-            /delete - удалить из корзины выбранные комплектующие.
+            /delete - полностью очистить корзину.
             /exit - выйти из каталога запчастей.
             /help - Справка.
             """;

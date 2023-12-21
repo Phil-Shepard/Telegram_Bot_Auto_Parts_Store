@@ -6,6 +6,7 @@ import com.urfu.domain.message.MessageFromUser;
 import com.urfu.domain.message.MessageToUser;
 import com.urfu.domain.sparePart.SparePart;
 import com.urfu.services.CarService;
+import com.urfu.services.HistoryService;
 import com.urfu.services.SparePartService;
 
 import static com.urfu.bot.Constants.*;
@@ -19,6 +20,7 @@ public class BotLogic {
     private final SparePartService sparePartService = new SparePartService();
     private final Bot bot;
     private String nameCar = "";
+    private final HistoryService history = new HistoryService();
 
     public BotLogic(Bot bot) {
         this.bot = bot;
@@ -33,19 +35,35 @@ public class BotLogic {
             long chatId = messageFromUser.getChatId();
             MessageToUser message = new MessageToUser();
             message.setChatId(chatId);
-            MessageToUser resultMessage;
+            MessageToUser resultMessage = null;
+            if (messageText.startsWith("/delete ")) {
+                String argument = messageText.substring("/delete ".length()).trim();
+                if (!argument.isEmpty()) {
+                    resultMessage = basket.deleteSpareParts(message, argument);
+                }
+            }
             switch (messageText) {
                 case COMMAND_START -> {
+                    nameCar = "";
                     resultMessage = botCommands.startCommandReceived(message, messageFromUser.getUserName());
                 }
                 case COMMAND_EXIT -> {
+                    nameCar = "";
                     resultMessage = botCommands.deleteButtons(message);
                 }
                 case COMMAND_SHOP -> {
+                    nameCar = "";
                     resultMessage = botCommands.setNamesButtonsAndSetTextNamesOfShop(message, carService);
                 }
                 case COMMAND_BASKET -> {
-                    resultMessage = botCommands.getBasket(message,basket);
+                    resultMessage = basket.getBasket(message);
+                }
+                case COMMAND_DELETE -> {
+                    resultMessage = basket.deleteAllPartsFromBasket(message);
+                }
+                case COMMAND_ORDER -> {
+                    resultMessage = basket.makeOrder(message);
+                    basket.deleteAllPartsFromBasket(message);
                 }
                 case "BMW" -> {
                     nameCar = "BMW";
@@ -63,19 +81,19 @@ public class BotLogic {
                     resultMessage = botCommands.setTextHelp(message);
                 }
                 case COMMAND_WHEELS -> {
-                    resultMessage = botCommands.addSparePartInBasket(message, basket, nameCar, new SparePart("колёса"));
+                    resultMessage = basket.addSparePartInBasket(message, nameCar, new SparePart("колёса"));
                 }
                 case COMMAND_WHIPERS -> {
-                    resultMessage = botCommands.addSparePartInBasket(message, basket, nameCar, new SparePart("дворники"));
+                    resultMessage = basket.addSparePartInBasket(message, nameCar, new SparePart("дворники"));
                 }
                 case COMMAND_HEADLIGHTS -> {
-                    resultMessage = botCommands.addSparePartInBasket(message, basket, nameCar, new SparePart("фары"));
+                    resultMessage = basket.addSparePartInBasket(message, nameCar, new SparePart("фары"));
                 }
                 default -> {
-                    resultMessage = botCommands.setTextCommandNotFound(message);
+                    if (!messageText.startsWith("/delete "))
+                        resultMessage = botCommands.setTextCommandNotFound(message);
                 }
             }
-
             bot.sendMessage(resultMessage);
         }
     }
