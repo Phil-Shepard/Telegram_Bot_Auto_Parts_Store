@@ -1,6 +1,5 @@
 package com.urfu.domain.basket;
 
-import com.urfu.domain.history.History;
 import com.urfu.domain.message.MessageToUser;
 import com.urfu.domain.sparePart.SparePart;
 
@@ -73,7 +72,7 @@ public class Basket {
         return new MessageToUser(chatId, answer);
     }
 
-    public MessageToUser deleteSpareParts(long chatId, String input) {
+    public MessageToUser deleteSparePartsFromBasket(long chatId, String input) {
         String answer;
         String[] parts = input.split(":");
         if (parts.length != 2) {
@@ -102,7 +101,6 @@ public class Basket {
         return new MessageToUser(chatId, answer);
     }
 
-
     /**
      * Полностью очищает корзину
      * @return уведомление о том, что корзина очищена.
@@ -111,38 +109,6 @@ public class Basket {
         String answer;
         contentsBasket.clear();
         answer = "Корзина очищена";
-        return new MessageToUser(chatId, answer);
-    }
-
-    /**
-     * Создаёт отчёт и вносит его в историю заказов, очищая корзину
-     * @return Сообщение об успешном запасе, также возвращает содержимое заказа
-     */
-    public MessageToUser makeOrder(long chatId, History history){
-        String answer;
-        if (!contentsBasket.isEmpty()){
-            answer = "Успешно заказано:" + "\n" + getBasket(chatId)
-                    .getText().replace("Содержимое корзины:\n", "");
-            history.getHistoryList().add(answer
-                    .replace("Успешно заказано:", ""));
-            return new MessageToUser(chatId, answer);
-        }
-        answer = "Нечего заказывать, корзина пустая";
-        return new MessageToUser(chatId, answer);
-    }
-
-    public MessageToUser getHistory(long chatId, History history){
-        String answer;
-        if (history.getHistoryList().isEmpty()) {
-            answer = "История заказов пуста";
-            return new MessageToUser(chatId, answer);
-        } else {
-            answer = "История заказов:\n";
-            for (String order : history.getHistoryList()) {
-                answer += order;
-            }
-        }
-        answer.replaceAll("\n\n", "\n");
         return new MessageToUser(chatId, answer);
     }
 }

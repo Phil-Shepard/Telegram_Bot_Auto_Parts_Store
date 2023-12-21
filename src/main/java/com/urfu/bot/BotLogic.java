@@ -33,7 +33,7 @@ public class BotLogic {
             if (messageText.startsWith("/delete ")) {
                 String argument = messageText.substring("/delete ".length()).trim();
                 if (!argument.isEmpty()) {
-                    resultMessage = basket.deleteSpareParts(chatId, argument);
+                    resultMessage = basket.deleteSparePartsFromBasket(chatId, argument);
                 }
             }
             switch (messageText) {
@@ -53,11 +53,11 @@ public class BotLogic {
                     resultMessage = basket.deleteAllPartsFromBasket(chatId);
                 }
                 case COMMAND_ORDER -> {
-                    resultMessage = basket.makeOrder(chatId,history);
+                    resultMessage = botMessageCreator.makeOrder(chatId,history,basket);
                     basket.deleteAllPartsFromBasket(chatId);
                 }
                 case COMMAND_HISTORY -> {
-                    resultMessage = basket.getHistory(chatId, history);
+                    resultMessage = history.getHistory(chatId);
                 }
                 case "BMW" -> {
                     nameCar = "BMW";

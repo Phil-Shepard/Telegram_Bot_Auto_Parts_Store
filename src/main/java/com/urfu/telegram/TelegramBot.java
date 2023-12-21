@@ -33,7 +33,6 @@ public class TelegramBot extends TelegramLongPollingBot implements Bot {
         List<BotCommand> listOfCommands = new ArrayList<>();
         listOfCommands.add(new BotCommand("/start", "Это телеграмм бот магазина автозапчастей."));
         listOfCommands.add(new BotCommand("/shop", "Перейти в каталог запчастей"));
-        listOfCommands.add(new BotCommand("/add", "Добавить в корзину выбранную запчасть"));
         listOfCommands.add(new BotCommand("/basket", "Вывести содержимое корзины"));
         listOfCommands.add(new BotCommand("/order", "Оформить заказ"));
         listOfCommands.add(new BotCommand("/history", "Вывести историю заказов"));
