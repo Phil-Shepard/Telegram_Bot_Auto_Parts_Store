@@ -1,10 +1,9 @@
 package com.urfu.bot;
 
-import com.urfu.domain.basket.Basket;
 import com.urfu.domain.car.Car;
-import com.urfu.domain.history.History;
 import com.urfu.domain.message.MessageToUser;
 import com.urfu.services.CarService;
+
 import static com.urfu.bot.Constants.*;
 
 /**
@@ -63,22 +62,5 @@ public class BotMessageCreator {
     public MessageToUser createMessageNotFoundCommand(long chatId) {
         String answer = "Команда не найдена";
         return new MessageToUser(chatId, answer, false, null);
-    }
-
-    /**
-     * Создаёт отчёт и вносит его в историю заказов, очищая корзину
-     * @return Сообщение об успешном запасе, также возвращает содержимое заказа
-     */
-    public MessageToUser makeOrder(long chatId, History history, Basket basket){
-        String answer;
-        if (!basket.contentsBasket.isEmpty()){
-            answer = "Успешно заказано:" + "\n" + basket.getBasket(chatId)
-                    .getText().replace("Содержимое корзины:\n", "");
-            history.getHistoryList().add(answer
-                    .replace("Успешно заказано:", ""));
-            return new MessageToUser(chatId, answer);
-        }
-        answer = "Нечего заказывать, корзина пустая";
-        return new MessageToUser(chatId, answer);
     }
 }
