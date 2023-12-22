@@ -24,8 +24,6 @@ import java.util.List;
  * Телеграмм бот
  */
 public class TelegramBot extends TelegramLongPollingBot implements Bot {
-    private final Basket basket = new Basket();
-    private final History history = new History();
     private final BotLogic botLogic = new BotLogic(this);
     private final BotConfig config = new BotConfig();
 
@@ -75,7 +73,7 @@ public class TelegramBot extends TelegramLongPollingBot implements Bot {
                 update.getMessage().getChat().getFirstName()
         );
 
-        botLogic.onUpdateReceived(message, basket, history);
+        botLogic.onUpdateReceived(message);
     }
 
     /**

@@ -17,6 +17,9 @@ public class BotLogic {
     private final CarService carService = new CarService();
     private final Bot bot;
     private String nameCar = "";
+    private final Basket basket = new Basket();
+    private final History history = new History();
+
 
     public BotLogic(Bot bot) {
         this.bot = bot;
@@ -25,7 +28,7 @@ public class BotLogic {
     /**
      * Точка входа, куда будут поступать сообщения от пользователей. Отсюда будет идти вся новая логика.
      */
-    public void onUpdateReceived(MessageFromUser messageFromUser, Basket basket, History history) {
+    public void onUpdateReceived(MessageFromUser messageFromUser) {
         if (messageFromUser.getMessage() != null && !messageFromUser.getMessage().isEmpty()) {
             String messageText = messageFromUser.getMessage();
             long chatId = messageFromUser.getChatId();
