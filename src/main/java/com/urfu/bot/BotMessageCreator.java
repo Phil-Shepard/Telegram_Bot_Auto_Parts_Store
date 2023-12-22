@@ -6,7 +6,9 @@ import com.urfu.domain.history.History;
 import com.urfu.domain.message.MessageToUser;
 import com.urfu.domain.sparePart.SparePart;
 import com.urfu.services.CarService;
+import com.urfu.services.SpareService;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -192,5 +194,46 @@ public class BotMessageCreator {
         }
         answer = "Нечего заказывать, корзина пустая";
         return new MessageToUser(chatId, answer);
+    }
+
+    /**
+            * Создает сообщение с колличеством опр товара в пределах даты начала и конца
+     */
+    public MessageToUser createMessageCountProduct(
+            long chatId,
+            String typeSpare,
+            LocalDate startDate,
+            LocalDate endDate,
+            SpareService spareService
+    ) {
+        String answer = "Всего куплено товаров: " +
+                spareService.getCountSparesInDateRange(typeSpare, startDate, endDate);
+        return new MessageToUser(chatId, answer, true, null);
+    }
+
+    /**
+     * Создает сообщение с колличеством опр товара в пределах даты начала
+     */
+    public MessageToUser createMessageCountProduct(
+            long chatId,
+            String typeSpare,
+            LocalDate startDate,
+            SpareService spareService
+    ) {
+        String answer = "Всего куплено товаров: " + spareService.getCountSparesAfterDate(typeSpare, startDate);
+        return new MessageToUser(chatId, answer, true, null);
+    }
+
+
+    /**
+     * Отдаёт клиенту сообщение об ошибке
+     *
+     * @param messageException Сообщение об ошибке
+     */
+    public MessageToUser createMessageWithCustomException(
+            long chatId,
+            String messageException
+    ) {
+        return new MessageToUser(chatId, messageException, false, null);
     }
 }

@@ -2,6 +2,7 @@ package com.urfu.domain.car;
 
 import com.urfu.domain.sparePart.SparePart;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -13,10 +14,26 @@ import java.util.stream.Collectors;
 public class Car {
     private final String name;
     private final List<SparePart> spareParts = new ArrayList<>();
+    private final LocalDate localDate;
 
     public Car(String name, List<SparePart> spareParts) {
         this.name = name;
         this.spareParts.addAll(spareParts);
+        localDate = LocalDate.now();
+    }
+
+    /**
+     * Получение списка запчастей
+     */
+    public List<SparePart> getSpareParts() {
+        return spareParts;
+    }
+
+    /**
+     * Получение даты добавления
+     */
+    public LocalDate getLocalDate() {
+        return localDate;
     }
 
     /**

@@ -15,6 +15,8 @@ public class Constants {
     public static final String COMMAND_WHIPERS = "дворники";
     public static final String COMMAND_HEADLIGHTS = "фары";
     public static final String COMMAND_HELP = "/help";
+    public static final String COMMAND_COUNT = "/count";
+    public static final String COMMAND_ANY = "/any";
     public static final String HELP = """
             Справка о доступных командах:
             /shop
