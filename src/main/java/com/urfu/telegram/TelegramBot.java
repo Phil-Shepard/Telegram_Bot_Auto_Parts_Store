@@ -1,6 +1,8 @@
 package com.urfu.telegram;
 
 import com.urfu.bot.*;
+import com.urfu.domain.basket.Basket;
+import com.urfu.domain.history.OrderHistory;
 import com.urfu.domain.message.MessageFromUser;
 import com.urfu.domain.message.MessageToUser;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -21,7 +23,8 @@ import java.util.List;
  * Телеграмм бот
  */
 public class TelegramBot extends TelegramLongPollingBot implements Bot {
-
+    private final Basket basket = new Basket();
+    private final OrderHistory orderHistory = new OrderHistory();
     private final BotLogic botLogic = new BotLogic(this);
     private final BotConfig config = new BotConfig();
 
@@ -29,11 +32,10 @@ public class TelegramBot extends TelegramLongPollingBot implements Bot {
         List<BotCommand> listOfCommands = new ArrayList<>();
         listOfCommands.add(new BotCommand("/start", "Это телеграмм бот магазина автозапчастей."));
         listOfCommands.add(new BotCommand("/shop", "Перейти в каталог запчастей"));
-        listOfCommands.add(new BotCommand("/add", "Добавить в корзину выбранную запчасть"));
         listOfCommands.add(new BotCommand("/basket", "Вывести содержимое корзины"));
         listOfCommands.add(new BotCommand("/order", "Оформить заказ"));
         listOfCommands.add(new BotCommand("/history", "Вывести историю заказов"));
-        listOfCommands.add(new BotCommand("/delete", "Удалить из корзины выбранные комплектующие"));
+        listOfCommands.add(new BotCommand("/delete", "Полностью очистить корзниу"));
         listOfCommands.add(new BotCommand("/exit", "Выйти из каталога запчастей"));
         listOfCommands.add(new BotCommand("/help", "Справка"));
         try {
@@ -72,7 +74,7 @@ public class TelegramBot extends TelegramLongPollingBot implements Bot {
                 update.getMessage().getChat().getFirstName()
         );
 
-        botLogic.onUpdateReceived(message);
+        botLogic.onUpdateReceived(message, basket, orderHistory);
     }
 
     /**
