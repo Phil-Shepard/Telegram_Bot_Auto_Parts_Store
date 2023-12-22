@@ -1,16 +1,17 @@
 package com.urfu.domain.history;
 
 import com.urfu.domain.message.MessageToUser;
+
 import java.util.ArrayList;
 
 /**
  * Класс истории заказов
  */
-public class History {
+public class OrderHistory {
     private final ArrayList<String> historyList = new ArrayList<String>();
 
     /**
-     * возвращает историю заказов в виде листа строк
+     * Возвращает историю заказов в виде листа строк
      */
     public ArrayList<String> getHistoryList() {
         return historyList;

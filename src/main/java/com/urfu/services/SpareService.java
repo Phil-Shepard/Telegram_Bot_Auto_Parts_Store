@@ -1,6 +1,7 @@
 package com.urfu.services;
 
 import com.urfu.domain.car.Car;
+import com.urfu.domain.sparePart.SparePartHistory;
 import com.urfu.storage.Storage;
 
 import java.time.LocalDate;
@@ -21,25 +22,31 @@ public class SpareService {
     }
 
     /**
-     * Получение колличества деталей в диапозоне заданных дат
+     * Получение количества деталей в диапазоне заданных дат
      */
-    public Long getCountSparesInDateRange(String typeSpare, LocalDate startDate, LocalDate endDate) {
-        return getCars().stream().flatMap(car ->
-                car.getSpareParts().stream()
-        ).filter(spare ->
-                spare.getLocalDate().isBefore(endDate)
-                        && spare.getLocalDate().isAfter(startDate)
-                        && (Objects.equals(typeSpare, "any") || spare.getName().equals(typeSpare))
-        ).count();
+    public Long getCountSparesInDateRange(
+            String typeSpare,
+            LocalDate startDate,
+            LocalDate endDate,
+            SparePartHistory sparePartHistory
+    ) {
+        return sparePartHistory.getSparePartHistory().stream()
+                .filter(spare ->
+                        spare.getLocalDate().isBefore(endDate)
+                                && spare.getLocalDate().isAfter(startDate)
+                                && (Objects.equals(typeSpare, "any") || spare.getName().equals(typeSpare))
+                ).count();
     }
 
     /**
-    * Получение колличества деталей после определённой даты
+     * Получение количества деталей после определённой даты
      */
-    public Long getCountSparesAfterDate(String typeSpare, LocalDate startDate) {
-        return getCars().stream().flatMap(car ->
-                car.getSpareParts().stream()
-        ).filter(spare ->
+    public Long getCountSparesAfterDate(
+            String typeSpare,
+            LocalDate startDate,
+            SparePartHistory sparePartHistory
+    ) {
+        return sparePartHistory.getSparePartHistory().stream().filter(spare ->
                 spare.getLocalDate().isAfter(startDate)
                         && (Objects.equals(typeSpare, "any") || spare.getName().equals(typeSpare))
         ).count();
