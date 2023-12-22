@@ -8,6 +8,8 @@ public class Constants {
     public static final String COMMAND_EXIT = "/exit";
     public static final String COMMAND_SHOP = "/shop";
     public static final String COMMAND_HELP = "/help";
+    public static final String COMMAND_COUNT = "/count";
+    public static final String COMMAND_ANY = "/any";
     public static final String HELP = """
             Справка о доступных командах:
             /shop

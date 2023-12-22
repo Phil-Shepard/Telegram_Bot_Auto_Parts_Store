@@ -3,8 +3,12 @@ package com.urfu.bot;
 import com.urfu.domain.car.Car;
 import com.urfu.domain.message.MessageToUser;
 import com.urfu.services.CarService;
+import com.urfu.services.SpareService;
 
-import static com.urfu.bot.Constants.*;
+import java.time.LocalDate;
+
+import static com.urfu.bot.Constants.HELP;
+import static com.urfu.bot.Constants.TEXT_START;
 
 /**
  * Класс, содержащий методы для создания сообщений от бота для пользователя.
@@ -52,8 +56,48 @@ public class BotMessageCreator {
      */
     public MessageToUser createMessageDeleteButtons(long chatId) {
         String answer = "Вы закрыли каталог товаров";
-        Boolean removeMarkup = true;
-        return new MessageToUser(chatId, answer, removeMarkup, null);
+        return new MessageToUser(chatId, answer, true, null);
+    }
+
+    /**
+     * Создает сообщение с колличеством опр товара в пределах даты начала и конца
+     */
+    public MessageToUser createMessageCountProduct(
+            long chatId,
+            String typeSpare,
+            LocalDate startDate,
+            LocalDate endDate,
+            SpareService spareService
+    ) {
+        String answer = "Всего куплено товаров: " +
+                spareService.getCountSparesInDateRange(typeSpare, startDate, endDate);
+        return new MessageToUser(chatId, answer, true, null);
+    }
+
+    /**
+     * Создает сообщение с колличеством опр товара в пределах даты начала
+     */
+    public MessageToUser createMessageCountProduct(
+            long chatId,
+            String typeSpare,
+            LocalDate startDate,
+            SpareService spareService
+    ) {
+        String answer = "Всего куплено товаров: " + spareService.getCountSparesAfterDate(typeSpare, startDate);
+        return new MessageToUser(chatId, answer, true, null);
+    }
+
+
+    /**
+     * Отдаёт клиенту сообщение об ошибке
+     *
+     * @param messageException Сообщение об ошибке
+     */
+    public MessageToUser createMessageWithCustomException(
+            long chatId,
+            String messageException
+    ) {
+        return new MessageToUser(chatId, messageException, false, null);
     }
 
     /**
