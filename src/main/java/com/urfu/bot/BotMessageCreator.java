@@ -2,17 +2,15 @@ package com.urfu.bot;
 
 import com.urfu.domain.basket.Basket;
 import com.urfu.domain.car.Car;
-import com.urfu.domain.history.History;
+import com.urfu.domain.history.OrderHistory;
 import com.urfu.domain.message.MessageToUser;
+import com.urfu.domain.sparePart.SparePartHistory;
 import com.urfu.domain.sparePart.SparePart;
 import com.urfu.services.CarService;
 import com.urfu.services.SpareService;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 import static com.urfu.bot.Constants.HELP;
 import static com.urfu.bot.Constants.TEXT_START;
@@ -29,6 +27,7 @@ public class BotMessageCreator {
         String answer = "В наличии комплектующие для автомобилей:\n"
                 + carService.getNamesCars(", ");
         String buttonNamesSeparatedBySpaces = carService.getNamesCars(" ");
+
         return new MessageToUser(chatId, answer, false, buttonNamesSeparatedBySpaces);
     }
 
@@ -38,6 +37,7 @@ public class BotMessageCreator {
     public MessageToUser createMessageNamesButtonsAndTextNamesOfSpareParts(long chatId, Car car) {
         String answer = car.getAvailabilityParts(", ");
         String buttonNamesSeparatedBySpaces = car.getAvailabilityParts(" ");
+
         return new MessageToUser(chatId, answer, false, buttonNamesSeparatedBySpaces);
     }
 
@@ -45,8 +45,7 @@ public class BotMessageCreator {
      * Создается сообщение для пользователя с текстом приветствия и списком возможных команд бота.
      */
     public MessageToUser createMessageStartWorkBot(long chatId, String name) {
-        String answer = "Привет, " + name + ", это телеграм бот магазина автозапчастей.\n" +
-                TEXT_START;
+        String answer = "Привет, " + name + ", это телеграм бот магазина автозапчастей.\n" + TEXT_START;
         return new MessageToUser(chatId, answer, true, null);
     }
 
@@ -63,6 +62,7 @@ public class BotMessageCreator {
     public MessageToUser createMessageDeleteButtons(long chatId) {
         String answer = "Вы закрыли каталог товаров";
         Boolean removeMarkup = true;
+
         return new MessageToUser(chatId, answer, removeMarkup, null);
     }
 
@@ -71,6 +71,7 @@ public class BotMessageCreator {
      */
     public MessageToUser createMessageNotFoundCommand(long chatId) {
         String answer = "Команда не найдена";
+
         return new MessageToUser(chatId, answer, false, null);
     }
 
@@ -79,12 +80,13 @@ public class BotMessageCreator {
      */
     public MessageToUser MessageAddSparePartInBasket(long chatId, String carName, SparePart sparePart, Basket basket) {
         String answer;
-        if (Objects.equals(carName, "")){
+        if (Objects.equals(carName, "")) {
             answer = "Машина не выбрана, необходимо выбрать автомобиль.";
             return new MessageToUser(chatId, answer);
         }
         basket.addSparePartInBasket(carName, sparePart);
         answer = "Товар \"" + sparePart.getName() + "\" успешно добавлен в корзину.";
+
         return new MessageToUser(chatId, answer);
     }
 
@@ -129,8 +131,8 @@ public class BotMessageCreator {
 
             basketContents.append("\n");
         }
-
         answer = basketContents.toString();
+
         return new MessageToUser(chatId, answer);
     }
 
@@ -144,6 +146,7 @@ public class BotMessageCreator {
         String[] parts = input.split(":");
         if (parts.length != 2) {
             answer = "Неверный формат ввода. Используйте /delete Машина: запчасть";
+
             return new MessageToUser(chatId, answer);
         }
 
@@ -170,57 +173,79 @@ public class BotMessageCreator {
 
     /**
      * Полностью очищает корзину
+     *
      * @return уведомление о том, что корзина очищена.
      */
     public MessageToUser MessageDeleteAllPartsFromBasket(long chatId, Basket basket) {
         basket.deleteAllPartsFromBasket();
         String answer;
         answer = "Корзина очищена";
+
         return new MessageToUser(chatId, answer);
     }
 
     /**
      * Создаёт отчёт и вносит его в историю заказов, очищая корзину
+     *
      * @return Сообщение об успешном запасе, также возвращает содержимое заказа
      */
-    public MessageToUser makeOrder(long chatId, History history, Basket basket){
+    public MessageToUser makeOrder(long chatId, OrderHistory orderHistory, Basket basket, SparePartHistory sparePartHistory) {
         String answer;
-        if (!basket.getBasket().isEmpty()){
+        if (!basket.getBasket().isEmpty()) {
             answer = "Успешно заказано:" + "\n" + getMessageBasketContents(chatId, basket)
                     .getText().replace("Содержимое корзины:\n", "");
-            history.getHistoryList().add(answer
+            for (List<SparePart> spareList : basket.getBasket().values()) {
+                for (SparePart spare : spareList) {
+                    sparePartHistory.addSparePart(spare);
+                }
+            }
+            orderHistory.getHistoryList().add(answer
                     .replace("Успешно заказано:", ""));
             return new MessageToUser(chatId, answer);
         }
         answer = "Нечего заказывать, корзина пустая";
+
         return new MessageToUser(chatId, answer);
     }
 
     /**
-            * Создает сообщение с колличеством опр товара в пределах даты начала и конца
+     * Создает сообщение с количеством опр товара в пределах даты начала и конца
      */
     public MessageToUser createMessageCountProduct(
             long chatId,
             String typeSpare,
             LocalDate startDate,
             LocalDate endDate,
-            SpareService spareService
+            SpareService spareService,
+            SparePartHistory sparePartHistory
     ) {
         String answer = "Всего куплено товаров: " +
-                spareService.getCountSparesInDateRange(typeSpare, startDate, endDate);
+                spareService.getCountSparesInDateRange(
+                        typeSpare,
+                        startDate,
+                        endDate,
+                        sparePartHistory
+                );
+
         return new MessageToUser(chatId, answer, true, null);
     }
 
     /**
-     * Создает сообщение с колличеством опр товара в пределах даты начала
+     * Создает сообщение с количеством опр товара в пределах даты начала
      */
     public MessageToUser createMessageCountProduct(
             long chatId,
             String typeSpare,
             LocalDate startDate,
-            SpareService spareService
+            SpareService spareService,
+            SparePartHistory sparePartHistory
     ) {
-        String answer = "Всего куплено товаров: " + spareService.getCountSparesAfterDate(typeSpare, startDate);
+        String answer = "Всего куплено товаров: " + spareService.getCountSparesAfterDate(
+                typeSpare,
+                startDate,
+                sparePartHistory
+        );
+
         return new MessageToUser(chatId, answer, true, null);
     }
 

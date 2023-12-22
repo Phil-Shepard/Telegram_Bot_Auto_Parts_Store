@@ -28,7 +28,7 @@ public class TestBotLogic {
                 /shop – Перейти в каталог запчастей.
                 /basket - Вывести содержимое корзины.
                 /order - Оформить заказ.
-                /history - Вывести историю заказов.
+                /orderHistory - Вывести историю заказов.
                 /delete - Удалить все содержимое корзины.
                 /exit - Выйти из каталога запчастей.
                 /help - Справка.
@@ -48,7 +48,7 @@ public class TestBotLogic {
                 /shop
                 /basket
                 /order
-                /history
+                /orderHistory
                 /delete
                 /exit
                 /help""", fakeBot.getLastMessage());
@@ -170,7 +170,7 @@ public class TestBotLogic {
     }
 
     /**
-     * Тест проверяет, что при вызове команды /history, выводится история заказов
+     * Тест проверяет, что при вызове команды /orderHistory, выводится история заказов
      */
     @Test
     public void testCommandHistory(){
@@ -184,7 +184,7 @@ public class TestBotLogic {
         fakeBot.onUpdateReceived("колёса");
         fakeBot.onUpdateReceived("/order");
 
-        fakeBot.onUpdateReceived("/history");
+        fakeBot.onUpdateReceived("/orderHistory");
 
         Assert.assertEquals("""
                 История заказов:
