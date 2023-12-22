@@ -7,7 +7,7 @@ import java.util.List;
  * Класс для сохранения истории всех покупок
  */
 public class SparePartHistory {
-    private List<SparePart> orderList;
+    private final List<SparePart> orderList;
 
     public SparePartHistory() {
         orderList = new LinkedList<>();
