@@ -36,7 +36,7 @@ public class TelegramBot extends TelegramLongPollingBot implements Bot {
         listOfCommands.add(new BotCommand("/basket", "Вывести содержимое корзины"));
         listOfCommands.add(new BotCommand("/order", "Оформить заказ"));
         listOfCommands.add(new BotCommand("/history", "Вывести историю заказов"));
-        listOfCommands.add(new BotCommand("/delete", "Удалить из корзины выбранные комплектующие"));
+        listOfCommands.add(new BotCommand("/delete", "Полностью очистить корзниу"));
         listOfCommands.add(new BotCommand("/exit", "Выйти из каталога запчастей"));
         listOfCommands.add(new BotCommand("/help", "Справка"));
         try {
