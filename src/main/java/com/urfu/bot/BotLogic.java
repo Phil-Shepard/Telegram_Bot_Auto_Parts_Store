@@ -7,6 +7,9 @@ import com.urfu.domain.message.MessageToUser;
 import com.urfu.domain.sparePart.SparePart;
 import com.urfu.services.CarService;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static com.urfu.bot.Constants.*;
 
 /**
@@ -17,7 +20,7 @@ public class BotLogic {
     private final CarService carService = new CarService();
     private final Bot bot;
     private String nameCar = "";
-    private final Basket basket = new Basket();
+    private final Map<Long, Basket> basketsMap = new HashMap<>();
     private final History history = new History();
 
 
@@ -33,6 +36,14 @@ public class BotLogic {
             String messageText = messageFromUser.getMessage();
             long chatId = messageFromUser.getChatId();
             MessageToUser resultMessage = null;
+
+            Basket basket;
+            if (basketsMap.containsKey(chatId)) basket = basketsMap.get(chatId);
+            else {
+                basket = new Basket();
+                basketsMap.put(chatId, basket);
+            }
+
             if (messageText.startsWith("/delete ")) {
                 String argument = messageText.substring("/delete ".length()).trim();
                 if (!argument.isEmpty()) {
@@ -56,7 +67,7 @@ public class BotLogic {
                     resultMessage = botMessageCreator.MessageDeleteAllPartsFromBasket(chatId, basket);
                 }
                 case COMMAND_ORDER -> {
-                    resultMessage = botMessageCreator.makeOrder(chatId,history,basket);
+                    resultMessage = botMessageCreator.makeOrder(chatId, history, basket);
                     basket.deleteAllPartsFromBasket();
                 }
                 case COMMAND_HISTORY -> {
@@ -64,27 +75,51 @@ public class BotLogic {
                 }
                 case "BMW" -> {
                     nameCar = "BMW";
-                    resultMessage = botMessageCreator.createMessageNamesButtonsAndTextNamesOfSpareParts(chatId, carService.getCar("BMW"));
+                    resultMessage = botMessageCreator.createMessageNamesButtonsAndTextNamesOfSpareParts(
+                            chatId,
+                            carService.getCar("BMW")
+                    );
                 }
                 case "Renault" -> {
                     nameCar = "Renault";
-                    resultMessage = botMessageCreator.createMessageNamesButtonsAndTextNamesOfSpareParts(chatId, carService.getCar("Renault"));
+                    resultMessage = botMessageCreator.createMessageNamesButtonsAndTextNamesOfSpareParts(
+                            chatId,
+                            carService.getCar("Renault")
+                    );
                 }
                 case "Lada" -> {
                     nameCar = "Lada";
-                    resultMessage = botMessageCreator.createMessageNamesButtonsAndTextNamesOfSpareParts(chatId, carService.getCar("Lada"));
+                    resultMessage = botMessageCreator.createMessageNamesButtonsAndTextNamesOfSpareParts(
+                            chatId,
+                            carService.getCar("Lada")
+                    );
                 }
                 case COMMAND_HELP -> {
                     resultMessage = botMessageCreator.createMessageAccessButtons(chatId);
                 }
                 case COMMAND_WHEELS -> {
-                    resultMessage = botMessageCreator.MessageAddSparePartInBasket(chatId, nameCar, new SparePart("колёса"), basket);
+                    resultMessage = botMessageCreator.MessageAddSparePartInBasket(
+                            chatId,
+                            nameCar,
+                            new SparePart("колёса"),
+                            basket
+                    );
                 }
                 case COMMAND_WHIPERS -> {
-                    resultMessage = botMessageCreator.MessageAddSparePartInBasket(chatId, nameCar, new SparePart("дворники"), basket);
+                    resultMessage = botMessageCreator.MessageAddSparePartInBasket(
+                            chatId,
+                            nameCar,
+                            new SparePart("дворники"),
+                            basket
+                    );
                 }
                 case COMMAND_HEADLIGHTS -> {
-                    resultMessage = botMessageCreator.MessageAddSparePartInBasket(chatId, nameCar, new SparePart("фары"), basket);
+                    resultMessage = botMessageCreator.MessageAddSparePartInBasket(
+                            chatId,
+                            nameCar,
+                            new SparePart("фары"),
+                            basket
+                    );
                 }
                 default -> {
                     if (!messageText.startsWith("/delete "))
